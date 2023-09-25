@@ -1,0 +1,18 @@
+// GET response returns car count per lot
+{
+    "lot_name_1" : 1,
+    "lot_name_2" : 10,
+    ...
+}
+
+// POST request updates car count for a particular lot
+
+// entering
+{
+    "lot_name": 1
+} 
+
+// leaving
+{
+    "lot_name" : -1
+}
