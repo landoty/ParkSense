@@ -1,9 +1,10 @@
 import React from 'react';
 import { PrimeReactProvider } from 'primereact/api'
+import { useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
-import logo2 from "../../img/parksense-logo2.png"
-import "./../../../node_modules/primereact/resources/themes/lara-light-blue/theme.css";
+import logo2 from "../img/parksense-logo2.png"
+import "./../../node_modules/primereact/resources/themes/lara-light-blue/theme.css";
 import 'primereact/resources/primereact.min.css';
 
 export default function MainNavBar()
