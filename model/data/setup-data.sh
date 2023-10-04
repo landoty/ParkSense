@@ -1,4 +1,9 @@
- top_directory="/tmp/data/vehicle_data/data"
+# Name: setup-data.sh
+# Author: Landen Doty
+# Date: 10/03/2023
+# Description: Script used to automate partition of data used in training and validation
+#              Will not be used in production; just a quick script that allows us to easily recreate our training environment
+top_directory="/tmp/data/vehicle_data/data"
 
 # Get the total number of files in the directory
  total_files_v=$(find "$top_directory/vehicles/" -maxdepth 1 -type f | wc -l)
