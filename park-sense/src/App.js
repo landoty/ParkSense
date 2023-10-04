@@ -1,13 +1,13 @@
 import './App.css';
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api'
-import TabSidebar from './components/TabSidebar.js'
-import BlueLogo from './components/BlueLogo.js'
+import MainNavBar from './pages/components/MainNavBar.js'
+import WhatIsParkSense from './pages/components/WhatIsParkSense';
 
 function App() {
   return(
     <PrimeReactProvider>
-      <TabSidebar></TabSidebar><br></br><br></br>
-      <center><BlueLogo></BlueLogo></center>
+      <MainNavBar></MainNavBar><br></br><br></br>
+      <WhatIsParkSense></WhatIsParkSense>
     </PrimeReactProvider>);
 }
 
