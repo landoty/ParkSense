@@ -1,13 +1,19 @@
 import './App.css';
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api'
-import TabSidebar from './components/TabSidebar.js'
-import BlueLogo from './components/BlueLogo.js'
+import { PrimeReactProvider } from 'primereact/api'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MainMenu from './components/pages/MainMenu';
 
 function App() {
   return(
     <PrimeReactProvider>
-      <TabSidebar></TabSidebar><br></br><br></br>
-      <center><BlueLogo></BlueLogo></center>
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainMenu/>} />
+          {/* Add More Pages Here: */}
+          {/* <Route path="/availability" element={<Component_Name/>} /> */}
+          {/* <Route path="/map" element={<Component_Name/>} /> */}
+        </Routes>
+      </Router>
     </PrimeReactProvider>);
 }
 
