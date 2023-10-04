@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api'
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
-import "./../../node_modules/primereact/resources/themes/lara-light-blue/theme.css";
+import "./../../../node_modules/primereact/resources/themes/lara-light-blue/theme.css";
 import 'primereact/resources/primereact.min.css';
-import logo2 from "../img/parksense-logo2.png"
+import logo2 from "../../img/parksense-logo2.png"
 
-export default function TabSidebar()
+export default function MenuBar()
 {
     const items = [
         {

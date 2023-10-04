@@ -1,4 +1,4 @@
-import logo1 from "../img/parksense-logo.png"
+import logo1 from "../../img/parksense-logo.png"
 
 export default function BlueLogo()
 {
