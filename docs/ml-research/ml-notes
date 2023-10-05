@@ -1,0 +1,23 @@
+placeholder so the directory creates
+
+YOLOv2 model seems fastest for object detection, 
+
+Article: Faster CNN-based vehicle detection and counting strategy for fixed camera scenes
+    https://link.springer.com/article/10.1007/s11042-022-12370-9
+
+
+
+Possible Datasets:
+    Stanford Cars Dataset - https://www.kaggle.com/datasets/jessicali9530/stanford-cars-dataset
+    Stanford Cars Dataset (separated by classes) - https://www.kaggle.com/datasets/jutrera/stanford-car-dataset-by-classes-folder
+        - not sure if one would be better than the other, might be more complex working with separated. 
+        - tensorflow has a dataset of this preinstalled (tfds.image_classification.Cars196)?
+        - 1.85 GB
+
+
+-GREAT IDEA- add sensors to detect motion and have camera that takes still image for processing
+        -better than using video as input which would make it difficult to run model on microprocessor
+
+Research: Convolutional models, existing convolutional models, datasets (train and test)
+
+ml research goes here
