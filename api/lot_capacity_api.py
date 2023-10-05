@@ -66,7 +66,7 @@ class ParkingLot(Resource):
             # protect against negative lot current capacity
             if (update == -1 and parking_lots[lot_name]['cars'] > 0) or update == 1:
                 parking_lots[lot_name]['cars'] += update
-            return {'message': 'Current capacity update successfully'}, 200
+            return {'message': 'Current capacity updated successfully'}, 200
         # default return
         return {'message': 'Parking lots not found'}, 404
 
@@ -92,10 +92,6 @@ class ParkingLots(Resource):
             return subset, 200
         # return all lots by default
         return parking_lots, 200
-
-
-
-
 
 api.add_resource(ParkingLots, '/parking-lots')
 api.add_resource(ParkingLot, '/parking-lot/<string:lot_name>')
