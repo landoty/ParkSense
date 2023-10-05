@@ -1,3 +1,12 @@
+'''
+    Name: test-api.pi
+    Author: Landen Doty
+    Date: 10/04/23
+    Description: test the current state of the lot capacity api
+'''
+
+
+
 import unittest
 import requests
 import json
