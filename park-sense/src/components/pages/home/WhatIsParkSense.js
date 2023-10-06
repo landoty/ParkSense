@@ -1,12 +1,21 @@
+/*
+Name of program:        WhatIsParkSense.js
+Description:            About-Us Description page
+Inputs:                 None
+Outputs:                About-us information and team logo is returned
+Collaborators:          Troy D'Amico, Aaron Horton
+Other Sources:          React documentation
+Author:                 Sam Aldeguer
+Creation Date:          10/4/2023
+*/
 import React from 'react';
-import { PrimeReactProvider } from 'primereact/api';
 import logo1 from './../../../img/parksense-logo.png'
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function WhatIsParkSense()
 {
     return(
-        <PrimeReactProvider>
+        <div>
         <style>
         {`
             .WIPSLogo {
@@ -29,6 +38,6 @@ export default function WhatIsParkSense()
         <p className="WIPSpsize WIPSLeftMargin">
         <img src={logo1} className="WIPSLogo"></img>
         ParkSense is an online application that tracks the real-time capacity of parking lots for schools and companies. In order to track the capacities, cameras are set up at the entrances and exits of each parking lot, sensing when vehicles enter and leave the parking lots. Under the “Availability” tab, there is a list of all the parking lots and their capacities for your specified organization. Additionally, there is a parking map showing all the parking lots and their capacities under the “Parking Map” tab. Currently, ParkSense is only deployed to the University of Kansas, but we hope to expand in the future.</p>
-        </PrimeReactProvider>
+        </div>
     );
 }
