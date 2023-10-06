@@ -1,4 +1,4 @@
-import WhatIsParkSense from '../assets/WhatIsParkSense.js'
+import WhatIsParkSense from './WhatIsParkSense.js';
 
 export default function Home(){
     return(
