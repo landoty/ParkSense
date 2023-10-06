@@ -1,7 +1,7 @@
 import React from 'react';
 import { PrimeReactProvider } from 'primereact/api';
-import logo1 from '../../img/parksense-logo.png'
-import "./../../../node_modules/primereact/resources/themes/lara-light-blue/theme.css";
+import logo1 from './../../../img/parksense-logo.png'
+import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function WhatIsParkSense()
 {

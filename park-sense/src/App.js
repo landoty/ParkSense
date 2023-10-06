@@ -1,11 +1,11 @@
 import './App.css';
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api'
+import { PrimeReactProvider } from 'primereact/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/pages/Home.js';
-import Availability from './components/pages/Availability';
-import ParkingMap from './components/pages/ParkingMap';
-import NoPage from './components/pages/NoPage';
-import MainNavBar from './components/page-structure/MainNavBar.js'
+import Home from './components/pages/home/Home.js';
+import Availability from './components/pages/availability/Availability.js';
+import ParkingMap from './components/pages/parking-map/ParkingMap.js';
+import NoPage from './components/pages/no-page/NoPage.js';
+import MainNavBar from './components/general/MainNavBar.js';
 
 function App() {
   return(
