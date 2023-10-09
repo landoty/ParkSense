@@ -1,12 +1,8 @@
 /*
-Name of program:        LotStatus.js
-Description:            Parking lot status summary
-Inputs:                 None
-Outputs:                Returns a test status summary for a parking lot
-Collaborators:          Sam Aldeguer, Aaron Horton
-Other Sources:          React documentation
-Author:                 Troy D'Amico
-Creation Date:          10/5/2023
+Name: LotStatus.js
+Description:  Parking lot status summary
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/05/23
 */
 export default function LotStatus(){
     return(

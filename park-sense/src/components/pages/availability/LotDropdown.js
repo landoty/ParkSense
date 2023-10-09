@@ -1,12 +1,8 @@
 /*
-Name of program:        LotDropdown.js
-Description:            Dropdown box with all of the different lots
-Inputs:                 None
-Outputs:                Returns dropdown box with values
-Collaborators:          Sam Aldeguer, Aaron Horton
-Other Sources:          React documentation, PrimeReact documentation
-Author:                 Troy D'Amico
-Creation Date:          10/5/2023
+Name: LotDropdown.js
+Description: Dropdown box to display choices of different lots to choose from
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/05/23
 */
 import React, { useState } from 'react'
 import { Dropdown } from 'primereact/dropdown';
