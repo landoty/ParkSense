@@ -1,5 +1,8 @@
 /*
-
+Name: MainNavBar.js
+Description: Component to display main navigation bar
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/03/23
 */
 import React from 'react';
 import { PrimeReactProvider } from 'primereact/api'

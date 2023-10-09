@@ -1,12 +1,8 @@
 /*
-Name of program:        WhatIsParkSense.js
-Description:            About-Us Description page
-Inputs:                 None
-Outputs:                About-us information and team logo is returned
-Collaborators:          Troy D'Amico, Aaron Horton
-Other Sources:          React documentation
-Author:                 Sam Aldeguer
-Creation Date:          10/4/2023
+Name: WhatIsParkSense.js
+Description:  About-us description page
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/04/23
 */
 import React from 'react';
 import logo1 from './../../../img/parksense-logo.png'
