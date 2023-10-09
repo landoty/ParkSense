@@ -1,5 +1,8 @@
 /*
-
+Name: BlueLogo.js
+Description: Component to display blue parksense logo
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/04/23
 */
 import logo1 from "../../img/parksense-logo.png"
 
