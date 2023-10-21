@@ -26,7 +26,6 @@ class Authenticator():
 
         Methods:
             _server_hash (private) : calculate the expected hash of the api key, name, and count
-            _client_hash (private) : calculate the hash provided the client's arguments
             authenticate (public) : return T/F if the credentials are correct
                                     update the nonce count in the db
     '''
@@ -63,27 +62,18 @@ class Authenticator():
             count = str(data[0][1])
             hash_target = key + name + count
             hash_result = sha256(hash_target.encode())
-            return hash_result.hexdigest()
+            return hash_result.hexdigest(), int(count)
         return None
          
-    def _client_hash(self, name: str, key: str, count: str) -> str:
-        '''
-        @Pre: Client provided name, key, count to API
-        @Post: Calculate and return hash based on pre conditions
-        @Side Effects: None
-        '''
-        hash_target = key + name + count
-        return sha256(hash_target.encode()).hexdigest()        
-
- 
-    def authenticate(self, name: str, key: str, count: str) -> bool:
+    def authenticate(self, name: str, client_hash: str) -> bool:
         '''
         @Pre: Client provided name, key, count to API and input was sanitized
         @Post: Return True if hashes match, False if not
         @Side Effects: Count incremented by 1 in the databse if hashes match
                        Account for freshness (prevents replay attacks)
         '''
-        if self._server_hash(name) == self._client_hash(name, key, count):
+        server_hash, count = self._server_hash(name)
+        if server_hash == client_hash:
             if count == 255:
                 count = -1
             self.auth_db.cursor().execute(f"update lot_sensors \
