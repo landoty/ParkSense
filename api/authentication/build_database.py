@@ -23,7 +23,7 @@ def populate_with_lots(file_in):
     for lot in data:
         print(lot['name'])
         print(lot['key'])
-        cur.execute(f"INSERT INTO lot_sensors VALUES ('{lot['name']}', '{lot['key']}')")
+        cur.execute(f"INSERT INTO lot_sensors VALUES ('{lot['name']}', '{lot['key']}', 0)")
         print(cur.execute("SELECT * from lot_sensors").fetchall())
     con.commit()
     con.close()
@@ -32,7 +32,7 @@ def build_auth_db(lot_file):
     if not check_db():
         con = sqlite3.connect(DBFILE)
         cur = con.cursor()
-        cur.execute("CREATE TABLE lot_sensors(name, key)")  
+        cur.execute("CREATE TABLE lot_sensors(name, key, count)")  
         con.commit()
         con.close()              
         populate_with_lots(lot_file) 
