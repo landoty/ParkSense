@@ -4,14 +4,21 @@ Description: Centers and places LotDropdown and LotStatus components on page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/05/23
 */
+import { useState } from "react";
 import LotDropdown from "./LotDropdown"
 import LotStatus from "./LotStatus"
 
 export default function Availability(){
+    const [selectedLotId, setSelectedLotId] = useState(null);
+
+    const handleLotSelection = (lotId) => {
+        setSelectedLotId(lotId);
+    };
+
     return(
         <center>
-            <LotDropdown></LotDropdown>
-            <LotStatus></LotStatus>
+            <LotDropdown onLotSelect={handleLotSelection} />
+            <LotStatus currentLotId={selectedLotId} />
         </center>
     );
 }
