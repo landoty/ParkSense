@@ -42,14 +42,6 @@ class Authenticator():
         except:
             print("Failed to connect to provided authentication database")
 
-    def __del__(self):
-        '''
-        @Pre: Existing Authenticator class
-        @Post: Close the database connection before deallocating object
-        @Side Effects: Databse connection terminated
-        '''
-        self.auth_db.close()
-     
     def _server_hash(self, name: str, sqlite_conn) -> str:
         '''
         @Pre: Client provided name to API
@@ -82,5 +74,6 @@ class Authenticator():
                                             set count={int(count)+1} \
                                             where name='{name}'")
             conn.commit()
+            conn.close()
             return True
         return False
