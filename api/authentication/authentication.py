@@ -16,8 +16,26 @@
 import sqlite3
 from hashlib import sha256
 
+
 class Authenticator():
+    '''
+        A class to handle authentication of the client to the API service
+
+        Attr's:
+            auth_db : connection to the authentication database (sqlite3)
+
+        Methods:
+            _server_hash (private) : calculate the expected hash of the api key, name, and count
+            _client_hash (private) : calculate the hash provided the client's arguments
+            authenticate (public) : return T/F if the credentials are correct
+                                    update the nonce count in the db
+    '''
     def __init__(self, auth_db: str):
+        '''
+        @Pre: None
+        @Post: instantiate the Authenticator class and connect to the database
+        @Side Effects: Open a connection to the local sqlit3 db
+        '''
         self.auth_db = None
         try:
             self.auth_db = sqlite3.connect(auth_db)
@@ -25,9 +43,19 @@ class Authenticator():
             print("Failed to connect to provided authentication database")
 
     def __del__(self):
+        '''
+        @Pre: Existing Authenticator class
+        @Post: Close the database connection before deallocating object
+        @Side Effects: Databse connection terminated
+        '''
         self.auth_db.close()
      
     def _server_hash(self, name: str) -> str:
+        '''
+        @Pre: Client provided name to API
+        @Post: Return hash if name is in the database, return None if not
+        @Side Effects: Query database
+        '''
         data = self.auth_db.cursor().execute(f"select key,count from lot_sensors where \
                                                 name='{name}'").fetchall()
         if data != []:
@@ -39,11 +67,22 @@ class Authenticator():
         return None
          
     def _client_hash(self, name: str, key: str, count: str) -> str:
+        '''
+        @Pre: Client provided name, key, count to API
+        @Post: Calculate and return hash based on pre conditions
+        @Side Effects: None
+        '''
         hash_target = key + name + count
         return sha256(hash_target.encode()).hexdigest()        
 
  
     def authenticate(self, name: str, key: str, count: str) -> bool:
+        '''
+        @Pre: Client provided name, key, count to API and input was sanitized
+        @Post: Return True if hashes match, False if not
+        @Side Effects: Count incremented by 1 in the databse if hashes match
+                       Account for freshness (prevents replay attacks)
+        '''
         if self._server_hash(name) == self._client_hash(name, key, count):
             if count == 255:
                 count = -1
