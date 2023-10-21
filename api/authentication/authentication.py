@@ -35,9 +35,10 @@ class Authenticator():
         @Post: instantiate the Authenticator class and connect to the database
         @Side Effects: Open a connection to the local sqlit3 db
         '''
-        self.auth_db = None
+        self.auth_db = auth_db
         try:
-            self.auth_db = sqlite3.connect(auth_db)
+            test = sqlite3.connect(auth_db)
+            
         except:
             print("Failed to connect to provided authentication database")
 
@@ -49,13 +50,13 @@ class Authenticator():
         '''
         self.auth_db.close()
      
-    def _server_hash(self, name: str) -> str:
+    def _server_hash(self, name: str, sqlite_conn) -> str:
         '''
         @Pre: Client provided name to API
         @Post: Return hash if name is in the database, return None if not
         @Side Effects: Query database
         '''
-        data = self.auth_db.cursor().execute(f"select key,count from lot_sensors where \
+        data = sqlite_conn.cursor().execute(f"select key,count from lot_sensors where \
                                                 name='{name}'").fetchall()
         if data != []:
             key = data[0][0]
@@ -72,13 +73,14 @@ class Authenticator():
         @Side Effects: Count incremented by 1 in the databse if hashes match
                        Account for freshness (prevents replay attacks)
         '''
-        server_hash, count = self._server_hash(name)
+        conn = sqlite3.connect(self.auth_db)
+        server_hash, count = self._server_hash(name, conn)
         if server_hash == client_hash:
             if count == 255:
                 count = -1
-            self.auth_db.cursor().execute(f"update lot_sensors \
+            conn.cursor().execute(f"update lot_sensors \
                                             set count={int(count)+1} \
                                             where name='{name}'")
-            self.auth_db.commit()
+            conn.commit()
             return True
         return False
