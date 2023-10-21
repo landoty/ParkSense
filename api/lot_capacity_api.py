@@ -9,18 +9,16 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from authentication.authentication import Authenticator
+import json
 
 # Init the app and api objects
 app = Flask(__name__)
 api = Api(app)
 auth = Authenticator("./authentication/auth.db")
+
 # Init parking lot capacities
-# TODO : In production, this should be read from an auxillery file
-parking_lots = {
-        'lot1': {'capacity': 100, 'cars': 0},
-        'lot2': {'capacity': 150, 'cars': 0},
-        'lot3': {'capacity': 200, 'cars': 0}
-}
+lot_file = open("./parking_lots.json")
+parking_lots = json.load(lot_file)
 
 # flask has a really nice built-in class for parsing requests
 # also handles a lot of the security concerns with RCE, RCI, LFI, etc.
