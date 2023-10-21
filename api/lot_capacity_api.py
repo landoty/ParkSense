@@ -8,11 +8,12 @@
 '''
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
+from authentication.authentication import Authenticator
 
 # Init the app and api objects
 app = Flask(__name__)
 api = Api(app)
-
+auth = Authenticator("./authentication/auth.db")
 # Init parking lot capacities
 # TODO : In production, this should be read from an auxillery file
 parking_lots = {
@@ -25,6 +26,7 @@ parking_lots = {
 # also handles a lot of the security concerns with RCE, RCI, LFI, etc.
 parser = reqparse.RequestParser()
 parser.add_argument('update', type=int, help='Update current car count')
+parser.add_argument('auth', type=str, help='Authentication hash')
 
 # Single parking lot object
 class ParkingLot(Resource):
@@ -53,7 +55,14 @@ class ParkingLot(Resource):
     def post(self, lot_name):
         # Parse parameter
         args = parser.parse_args()
+        if not(hasattr(args, 'update') and hasattr(args,'auth')):
+            return {'message': 'Insufficient arguments'}, 404
+
         update = args['update']
+        auth_hash = args['auth']
+        
+        if not auth.authenticate(lot_name, auth_hash):
+            return {'message': 'Device authentication failed'}, 401
 
         # normalize update value to 1 or -1
         if update > 0:
@@ -72,7 +81,7 @@ class ParkingLot(Resource):
 
 class ParkingLots(Resource):
     '''
-    @Pre: parking lot data loaded, some capacity and current capacity
+    @Pre: parking lot data loaded some capacity and current capacity
     @Post: Return a subset of all of the lots' current capacities
            If a list of lots is specified, return only those
            Else return all
