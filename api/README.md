@@ -43,7 +43,7 @@ A quick notes for using the API
 ### Computing sha256 hash (especially for testing)
 - Hash is computed server-side by concatenating the API key, device name, and nonce as a single string
 - For example, 'api-key-123device10' would be the to-be-hashed string for device 1's request with api key "api-key-123" and a nonce of 0
-- Python provides an implementation in the (hashlib)[https://docs.python.org/3/library/hashlib.html]  library
+- Python provides an implementation in the [hashlib](https://docs.python.org/3/library/hashlib.html) library
 - Use OpenSSL on the command line
 
 ## Examples using curl
