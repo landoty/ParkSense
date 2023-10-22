@@ -1,0 +1,5 @@
+{
+        "lot1" : {"capacity": 100, "cars": 0},
+        "lot2" : {"capacity": 150, "cars": 0},
+        "lot3" : {"capacity": 200, "cars": 0}
+}
