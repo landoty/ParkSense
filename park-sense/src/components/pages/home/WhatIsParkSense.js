@@ -5,7 +5,7 @@ Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/04/23
 */
 import React from 'react';
-import logo1 from './../../../img/parksense-logo.png'
+import logo1 from './../../../img/logos/parksense-logo.png'
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function WhatIsParkSense()
