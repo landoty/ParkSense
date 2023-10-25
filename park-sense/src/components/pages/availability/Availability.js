@@ -16,9 +16,12 @@ export default function Availability(){
     };
 
     return(
+        <div>
+        <title>Availability</title>
         <center>
             <LotDropdown onLotSelect={handleLotSelection} />
             <LotStatus currentLotId={selectedLotId} />
         </center>
+        </div>
     );
 }
