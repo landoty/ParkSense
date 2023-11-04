@@ -4,23 +4,20 @@ Description:  Parking lot status summary
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/05/23
 */
-import { useGetAllLotsData } from '../../../hooks/useGetAllLotsData';
+import { useGetSingleLotData } from '../../../hooks/useGetSingleLotData';
 
 export default function LotStatus(currentLotId){
-    const userData = useGetAllLotsData();
-
+    const userData = useGetSingleLotData(currentLotId);
     return(
         <div>
-            {userData ? (
-                Object.keys(userData).map((key) => (
-                    <div key={key}>
-                        <p>Lot: {key}</p>
-                        <p>Capacity: {userData[key].capacity}</p>
-                        <p>Cars: {userData[key].cars}</p>
-                    </div>
-                ))
+            {currentLotId.currentLotId ? (
+                <div>
+                    <p>Lot: {currentLotId.currentLotId}</p>
+                    <p>Capacity: {userData.capacity}</p>
+                    <p>Cars: {userData.cars}</p>
+                </div>
             ) : (
-                <p>Loading...</p>
+                <p>Please select a parking lot above</p>
             )}
         </div>
     );
