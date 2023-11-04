@@ -1,12 +1,12 @@
 /*
-Name: useGetAllLotsData.js
-Description:  React Hook that makes API call and returns data
+Name: useGetAllData.js
+Description:  React Hook that makes API call and returns all data
 Authors: Troy D'Amico
 Date: 10/20/23
 */
 import { useEffect, useState } from "react";
 
-export const useGetAllLotsData = () => {
+export const useGetSingleLotData = () => {
     const [userData, setUserData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
