@@ -12,6 +12,10 @@ import AboutImage from './../../../img/home-img/lot1.jpg';
 import TeamImage from './../../../img/home-img/lot2.jpg';
 import ContactImage from './../../../img/home-img/lot3.jpg';
 import HowItWorks from './HowItWorks';
+import SamAldeguer from './SamAldeguer';
+import AaronHorton from './AaronHorton';
+import TroyDamico from './TroyDamico.js';
+import SepehrNoori from './SepehrNoori.js';
 
 export default function HomeNavBar()
 {
@@ -41,6 +45,11 @@ export default function HomeNavBar()
                 .HomeImages {
                     width: 100%;
                 }
+                .Alignment {
+                    display: flex;
+                    float: left;
+                    width: 30%;
+                }
             `}
             </style>
             <div>
@@ -56,7 +65,15 @@ export default function HomeNavBar()
                         <br></br>
                         <HowItWorks></HowItWorks>
                     </div>}
-                {active === "Team"}
+                {active === "Team" &&
+                    <div>
+                        <center><div className="Alignment">
+                            <SamAldeguer></SamAldeguer>
+                            <AaronHorton></AaronHorton>
+                            <TroyDamico></TroyDamico>
+                        </div></center>
+                    </div>
+                    }
                 {active === "Contact Us"}
             </div>
         </div>
