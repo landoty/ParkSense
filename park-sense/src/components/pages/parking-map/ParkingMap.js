@@ -1,6 +1,6 @@
 /*
 Name: ParkingMap.js
-Description:  Will be main component for parking map page
+Description:  Parking map page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/03/23
 */

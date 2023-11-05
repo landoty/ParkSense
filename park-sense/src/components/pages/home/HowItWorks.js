@@ -1,3 +1,9 @@
+/*
+Name: HowItWorks.js
+Description: Component for "How It Works" section on home page
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 11/5//23
+*/
 import React from "react";
 import HIWImage from './../../../img/home-img/microcontroller.png'
 import "primereact/resources/themes/lara-light-blue/theme.css";

@@ -4,10 +4,8 @@ Description: Component for navigation bar on home page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/25/23
 */
-
 import React, {useState} from 'react'; 
 import { TabMenu } from 'primereact/tabmenu';
-import { Divider } from 'primereact/divider';
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import WhatIsParkSense from './WhatIsParkSense';
 import AboutImage from './../../../img/home-img/lot1.jpg';

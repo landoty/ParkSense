@@ -1,6 +1,6 @@
 /*
 Name: WhatIsParkSense.js
-Description:  About-us description page
+Description: Component for "What is ParkSense?" section on home page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/04/23
 */

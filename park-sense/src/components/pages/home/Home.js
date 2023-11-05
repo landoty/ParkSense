@@ -1,6 +1,6 @@
 /*
 Name: Home.js
-Description:  Homepage/about us page
+Description: Home page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/04/23
 */
