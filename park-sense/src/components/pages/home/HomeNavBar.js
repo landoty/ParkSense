@@ -7,6 +7,7 @@ Date: 10/25/23
 
 import React, {useState} from 'react'; 
 import { TabMenu } from 'primereact/tabmenu';
+import { Divider } from 'primereact/divider';
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import WhatIsParkSense from './WhatIsParkSense';
 import AboutImage from './../../../img/home-img/lot1.jpg';
@@ -54,6 +55,7 @@ export default function HomeNavBar()
                 {active === "About" && 
                     <div>
                         <WhatIsParkSense></WhatIsParkSense>
+                        <br></br>
                         <HowItWorks></HowItWorks>
                     </div>}
                 {active === "Team"}
