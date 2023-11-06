@@ -71,6 +71,7 @@ export default function HomeNavBar()
                             <SamAldeguer></SamAldeguer>
                             <AaronHorton></AaronHorton>
                             <TroyDamico></TroyDamico>
+                            <SepehrNoori></SepehrNoori>
                         </div></center>
                     </div>
                     }
