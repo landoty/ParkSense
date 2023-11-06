@@ -4,15 +4,21 @@ Description:  Parking lot status summary
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/05/23
 */
-export default function LotStatus(){
+import { useGetSingleLotData } from '../../../hooks/useGetSingleLotData';
+
+export default function LotStatus(currentLotId){
+    const userData = useGetSingleLotData(currentLotId);
     return(
         <div>
-            <h1>Availability:</h1>
-                <p>Spots Available: 11/100</p>
-            <br></br>
-            <h1>General Info:</h1>
-            <p>Lot Parking Pass: Yellow</p>
-            <p>Yellow Pass Requred (8am-5pm Monday-Friday)</p>
+            {currentLotId.currentLotId ? (
+                <div>
+                    <p>Lot: {currentLotId.currentLotId}</p>
+                    <p>Capacity: {userData.capacity}</p>
+                    <p>Cars: {userData.cars}</p>
+                </div>
+            ) : (
+                <p>Please select a parking lot above</p>
+            )}
         </div>
     );
 }

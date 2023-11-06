@@ -1,8 +1,10 @@
 /*
-
+Name: App.js
+Description:  Main javascript component to set up page structure and routing
+Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
+Date: 10/05/23
 */
 import './App.css';
-import { PrimeReactProvider } from 'primereact/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/pages/home/Home.js';
 import Availability from './components/pages/availability/Availability.js';
@@ -12,17 +14,15 @@ import MainNavBar from './components/general/MainNavBar.js';
 
 function App() {
   return(
-    <PrimeReactProvider>
       <Router>
-        <MainNavBar></MainNavBar><br></br><br></br>
+        <MainNavBar></MainNavBar>
         <Routes>
           <Route index element={<Home/>}/>
           <Route path="/availability" element={<Availability/>}/>
           <Route path="/parking-map" element={<ParkingMap/>}/>
           <Route path="*" element={<NoPage/>}/>
         </Routes>
-      </Router>
-    </PrimeReactProvider>);
+      </Router>);
 }
 
 export default App;

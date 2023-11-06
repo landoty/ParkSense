@@ -1,13 +1,16 @@
 /*
 Name: Home.js
-Description:  Homepage/about us page
+Description: Home page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/04/23
 */
-import WhatIsParkSense from './WhatIsParkSense.js';
+import HomeNavBar from './HomeNavBar.js'
 
 export default function Home(){
     return(
-        <WhatIsParkSense></WhatIsParkSense>
+        <div>
+            <title>ParkSense</title>
+            <HomeNavBar></HomeNavBar>
+        </div>
     );
 }
