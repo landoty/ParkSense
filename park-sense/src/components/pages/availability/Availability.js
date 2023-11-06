@@ -17,6 +17,7 @@ export default function Availability(){
 
     return(
         <div>
+            <title>Availability</title>
             <center>
                 <LotDropdown onLotSelect={handleLotSelection} />
             </center>
