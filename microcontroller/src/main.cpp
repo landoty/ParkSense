@@ -22,6 +22,18 @@
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 
+// Including tensorflow libs
+
+#include <TensorFlowLite_ESP32.h>
+#include "tensorflow/lite/micro/kernels/micro_ops.h"
+#include "tensorflow/lite/micro/micro_error_reporter.h"
+#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
+#include "tensorflow/lite/micro/micro_interpreter.h"
+#include "tensorflow/lite/schema/schema_generated.h"
+
+// our model
+#include "model.h"
+
 // define the number of bytes you want to access
 #define EEPROM_SIZE 1
 
@@ -45,6 +57,23 @@
 #define PCLK_GPIO_NUM     22
 
 int pictureNumber = 0;
+
+class DDTFLErrorReporter : public tflite::ErrorReporter {
+public:
+  virtual int Report(const char* format, va_list args) {
+    int len = strlen(format);
+    char buffer[max(32, 2 * len)];  // assume 2 times format len is big enough
+    sprintf(buffer, format, args);
+    return 0;
+  }
+};
+
+const tflite::Model* model = ::tflite::GetModel(_tmp_custom_convs_saved_model_defaultopt_tflite);
+tflite::ErrorReporter* error_reporter = new DDTFLErrorReporter();
+const int tensor_arena_size = 9216;  // guess ... the same as used by esp32cam_person (person detection)
+uint8_t* tensor_arena;
+tflite::MicroInterpreter* interpreter = NULL;
+TfLiteTensor* input;
 
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
@@ -84,7 +113,22 @@ void setup() {
     config.jpeg_quality = 12;
     config.fb_count = 1;
   }
+
+  tensor_arena = (uint8_t *) heap_caps_malloc(tensor_arena_size, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
   
+  static tflite::MicroMutableOpResolver micro_mutable_op_resolver;
+  micro_mutable_op_resolver.AddBuiltin(
+      tflite::BuiltinOperator_DEPTHWISE_CONV_2D,
+      tflite::ops::micro::Register_DEPTHWISE_CONV_2D());
+  micro_mutable_op_resolver.AddBuiltin(tflite::BuiltinOperator_CONV_2D,
+                                       tflite::ops::micro::Register_CONV_2D());
+  micro_mutable_op_resolver.AddBuiltin(
+      tflite::BuiltinOperator_AVERAGE_POOL_2D,
+      tflite::ops::micro::Register_AVERAGE_POOL_2D());
+  
+  interpreter = new tflite::MicroInterpreter(model, *resolver, tensor_arena, tensor_arena_size, error_reporter);
+  TfLiteStatus allocate_status = interpreter->AllocateTensors();
+  input = interpreter->input(0);
   // Init Camera
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
