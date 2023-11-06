@@ -5,8 +5,8 @@ Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/05/23
 */
 import { useState } from "react";
-import LotDropdown from "./LotDropdown"
-import LotStatus from "./LotStatus"
+import LotDropdown from "./LotDropdown";
+import LotStatus from "./LotStatus";
 
 export default function Availability(){
     const [selectedLotId, setSelectedLotId] = useState(null);
@@ -16,9 +16,14 @@ export default function Availability(){
     };
 
     return(
-        <center>
-            <LotDropdown onLotSelect={handleLotSelection} />
-            <LotStatus currentLotId={selectedLotId} />
-        </center>
+        <div>
+            <title>Availability</title>
+            <center>
+                <LotDropdown onLotSelect={handleLotSelection} />
+            </center>
+            <div style={{paddingLeft:'10px'}}>
+                <LotStatus currentLotId={selectedLotId} />
+            </div>
+        </div>
     );
 }
