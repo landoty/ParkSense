@@ -1,3 +1,10 @@
+/*
+ * Name: model_config.h
+ * Authors: Landen Doty, Sepehr Noori
+ * Description: macros for model
+ * Date: 11/5/23
+ */
+
 #ifndef MODEL_CONFIG_H
 #define MODEL_CONFIG_H
 
