@@ -2,11 +2,11 @@
 Name: SepehrNoori.js
 Description: Component for Sepehr Noori on Team Page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
-Date: 11/5//23
+Date: 11/5/23
 */
 
 import React from 'react';
-import headshot from "./../../../img/home-img/SepehrNoori.png"
+import headshot from "./../../../../img/home-img/SepehrNoori.png"
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function SepehrNoori() {

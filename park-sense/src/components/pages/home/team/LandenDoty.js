@@ -1,15 +1,15 @@
 /*
-Name: SamAldeguer.js
-Description: Component for Sam Aldeguer on Team Page
+Name: LandenDoty.js
+Description: Component for Landen Doty on Team Page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
-Date: 11/5//23
+Date: 11/7/23
 */
 
 import React from 'react';
-import headshot from "./../../../img/home-img/SamAldeguer.png"
+import headshot from "./../../../../img/home-img/SepehrNoori.png"
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
-export default function SamAldeguer() {
+export default function LandenDoty() {
     return (
         <div>
         <style>
@@ -41,9 +41,9 @@ export default function SamAldeguer() {
         <figure className="FigStyling FigAlign">
             <img src={headshot} className="Headshot"></img>
             <figcaption className="CaptionStyling">
-                <h2 className="BottomSpacing">Sam Aldeguer</h2>
+                <h2 className="BottomSpacing">Landen Doty</h2>
                 <p className="TopSpacing BottomSpacing">University of Kansas Class of 2024</p>
-                <p>Front-End Development</p>
+                <p>Back-End Development</p>
             </figcaption>
         </figure>
         </div>

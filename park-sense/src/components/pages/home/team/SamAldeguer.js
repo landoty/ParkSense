@@ -1,15 +1,15 @@
 /*
-Name: AaronHorton.js
-Description: Component for Aaron Horton on Team Page
+Name: SamAldeguer.js
+Description: Component for Sam Aldeguer on Team Page
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
-Date: 11/5//23
+Date: 11/5/23
 */
 
 import React from 'react';
-import headshot from "./../../../img/home-img/AaronHorton.png"
+import headshot from "./../../../../img/home-img/SamAldeguer.png"
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
-export default function AaronHorton() {
+export default function SamAldeguer() {
     return (
         <div>
         <style>
@@ -41,7 +41,7 @@ export default function AaronHorton() {
         <figure className="FigStyling FigAlign">
             <img src={headshot} className="Headshot"></img>
             <figcaption className="CaptionStyling">
-                <h2 className="BottomSpacing">Aaron Horton</h2>
+                <h2 className="BottomSpacing">Sam Aldeguer</h2>
                 <p className="TopSpacing BottomSpacing">University of Kansas Class of 2024</p>
                 <p>Front-End Development</p>
             </figcaption>
