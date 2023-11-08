@@ -67,7 +67,7 @@ export default function HomeNavBar()
                     </div>}
                 {active === "Team" &&
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                            <h1>Meet the Team</h1>
+                        <h1>Meet the Team</h1>
                         <div className="CardRow">
                             <SamAldeguer></SamAldeguer>
                             <AaronHorton></AaronHorton>
