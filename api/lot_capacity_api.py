@@ -100,8 +100,12 @@ class ParkingLots(Resource):
         # return all lots by default
         return parking_lots, 200
 
+class ParkingLotNames(Resource):
+    def get(self):
+        return list(parking_lots.keys()), 200 
+        
 api.add_resource(ParkingLots, '/parking-lots')
 api.add_resource(ParkingLot, '/parking-lot/<string:lot_name>')
-
+api.add_resource(ParkingLotNames, '/lot-names')
 if __name__ == "__main__":
     app.run(debug=True)
