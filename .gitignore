@@ -1,3 +1,5 @@
 *.swp
 __pycache__/
 *.db
+CMakeLists.txt
+sdkconfig.*
