@@ -18,10 +18,10 @@ export default function Availability(){
     return(
         <div>
             <title>Availability</title>
-            <center>
-                <LotDropdown onLotSelect={handleLotSelection} />
+            <center style={{paddingTop:'1%'}}>
+                    <LotDropdown onLotSelect={handleLotSelection} />
             </center>
-            <div style={{paddingLeft:'10px'}}>
+            <div style={{padding:'1%'}}>
                 <LotStatus currentLotId={selectedLotId} />
             </div>
         </div>

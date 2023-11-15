@@ -1,0 +1,11 @@
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 25%;
+    row-gap: 25%;
+}
+
+.top-middle{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
