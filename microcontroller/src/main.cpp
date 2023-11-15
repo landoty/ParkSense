@@ -1,13 +1,16 @@
 /*********
- Name: main.cpp
- Authors: Landen Doty, Sepehr Noori
- Description: Main driver code for parksense application
- Date: 11/5/2023
-
- Adapted from: 
-    https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
-    https://www.instructables.com/ESP32-CAM-Person-Detection-Expreiment-With-TensorF/
-
+  Rui Santos
+  Complete project details at https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
+  
+  IMPORTANT!!! 
+   - Select Board "AI Thinker ESP32-CAM"
+   - GPIO 0 must be connected to GND to upload a sketch
+   - After connecting GPIO 0 to GND, press the ESP32-CAM on-board RESET button to put your board in flashing mode
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files.
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
 *********/
 
 #include "esp_camera.h"
@@ -18,6 +21,7 @@
 #include "soc/rtc_cntl_reg.h"  // Disable brownour problems
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
+#include "CNN.h"
 
 // Including tensorflow libs
 
@@ -33,6 +37,10 @@
 
 // define the number of bytes you want to access
 #define EEPROM_SIZE 1
+
+#define INPUT_W 96
+#define INPUT_H 96
+#define LED_BUILT_IN 21
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -55,30 +63,52 @@
 
 int pictureNumber = 0;
 
-class DDTFLErrorReporter : public tflite::ErrorReporter {
-public:
-  virtual int Report(const char* format, va_list args) {
-    int len = strlen(format);
-    char buffer[max(32, 2 * len)];  // assume 2 times format len is big enough
-    sprintf(buffer, format, args);
-    return 0;
-  }
-};
+CNN *cnn;
 
-const tflite::Model* model = ::tflite::GetModel(_tmp_custom_convs_saved_model_defaultopt_tflite);
-tflite::ErrorReporter* error_reporter = new DDTFLErrorReporter();
-const int tensor_arena_size = 9216;  // guess ... the same as used by esp32cam_person (person detection)
-uint8_t* tensor_arena;
-tflite::MicroInterpreter* interpreter = NULL;
-TfLiteTensor* input;
+uint32_t rgb565torgb888(uint16_t color)
+{
+    uint32_t r, g, b;
+    r = g = b = 0; 
+    r = (color >> 11) & 0x1F;
+    g = (color >> 5) & 0x3F;
+    b = color & 0x1F;
+    r = (r << 3) | (r >> 2);
+    g = (g << 2) | (g >> 4);
+    b = (b << 3) | (b >> 2);
+    return (r << 16) | (g << 8) | b;
+}
+
+int GetImage(camera_fb_t * fb, TfLiteTensor* input) 
+{
+    assert(fb->format == PIXFORMAT_RGB565);
+    // Trimming Image
+    int post = 0;
+    int startx = (fb->width - INPUT_W) / 2;
+    int starty = (fb->height - INPUT_H);
+    for (int y = 0; y < INPUT_H; y++) {
+        for (int x = 0; x < INPUT_W; x++) {
+            int getPos = (starty + y) * fb->width + startx + x;
+             MicroPrintf("input[%d]: fb->buf[%d]=%d\n", post, getPos, fb->buf[getPos]);
+            uint16_t color = ((uint16_t *)fb->buf)[getPos];
+            uint32_t rgb = rgb565torgb888(color);
+
+            float *image_data = tflite::GetTensorData<float>(input);
+            //delay(2000);
+
+            image_data[post * 3 + 0] = ((rgb >> 16) & 0xFF);  // R
+            image_data[post * 3 + 1] = ((rgb >> 8) & 0xFF);   // G
+            image_data[post * 3 + 2] = (rgb & 0xFF);          // B
+            post++;
+        }
+    }
+    return 0;
+}
 
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
- 
+
   Serial.begin(115200);
-  //Serial.setDebugOutput(true);
-  //Serial.println();
-  
+  Serial.setDebugOutput(true);
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -94,39 +124,22 @@ void setup() {
   config.pin_pclk = PCLK_GPIO_NUM;
   config.pin_vsync = VSYNC_GPIO_NUM;
   config.pin_href = HREF_GPIO_NUM;
-  config.pin_sscb_sda = SIOD_GPIO_NUM;
-  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_sccb_sda = SIOD_GPIO_NUM;
+  config.pin_sccb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_JPEG; 
+  config.frame_size = FRAMESIZE_96X96;
+  config.pixel_format = PIXFORMAT_RGB565; // PIXFORMAT_JPEG; // for streaming
+  config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
+  config.fb_location = CAMERA_FB_IN_PSRAM;
+  config.jpeg_quality = 12;
+  config.fb_count = 1;
   
-  if(psramFound()){
-    config.frame_size = FRAMESIZE_UXGA; // FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
-    config.jpeg_quality = 10;
-    config.fb_count = 2;
-  } else {
-    config.frame_size = FRAMESIZE_SVGA;
-    config.jpeg_quality = 12;
-    config.fb_count = 1;
-  }
-
-  tensor_arena = (uint8_t *) heap_caps_malloc(tensor_arena_size, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+  cnn = new CNN();
   
-  static tflite::MicroMutableOpResolver micro_mutable_op_resolver;
-  micro_mutable_op_resolver.AddBuiltin(
-      tflite::BuiltinOperator_DEPTHWISE_CONV_2D,
-      tflite::ops::micro::Register_DEPTHWISE_CONV_2D());
-  micro_mutable_op_resolver.AddBuiltin(tflite::BuiltinOperator_CONV_2D,
-                                       tflite::ops::micro::Register_CONV_2D());
-  micro_mutable_op_resolver.AddBuiltin(
-      tflite::BuiltinOperator_AVERAGE_POOL_2D,
-      tflite::ops::micro::Register_AVERAGE_POOL_2D());
-  
-  interpreter = new tflite::MicroInterpreter(model, *resolver, tensor_arena, tensor_arena_size, error_reporter);
-  TfLiteStatus allocate_status = interpreter->AllocateTensors();
-  input = interpreter->input(0);
   // Init Camera
+  pinMode(LED_BUILT_IN, OUTPUT); // Set the pin as output
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
     Serial.printf("Camera init failed with error 0x%x", err);
@@ -144,50 +157,55 @@ void setup() {
     Serial.println("No SD Card attached");
     return;
   }
-    
-  camera_fb_t * fb = NULL;
-  
-  // Take Picture with Camera
-  fb = esp_camera_fb_get();  
-  if(!fb) {
-    Serial.println("Camera capture failed");
-    return;
-  }
-  // initialize EEPROM with predefined size
-  EEPROM.begin(EEPROM_SIZE);
-  pictureNumber = EEPROM.read(0) + 1;
-
-  // Path where new picture will be saved in SD Card
-  String path = "/picture" + String(pictureNumber) +".jpg";
-
-  fs::FS &fs = SD_MMC; 
-  Serial.printf("Picture file name: %s\n", path.c_str());
-  
-  File file = fs.open(path.c_str(), FILE_WRITE);
-  if(!file){
-    Serial.println("Failed to open file in writing mode");
-  } 
-  else {
-    file.write(fb->buf, fb->len); // payload (image), payload length
-    Serial.printf("Saved file to path: %s\n", path.c_str());
-    EEPROM.write(0, pictureNumber);
-    EEPROM.commit();
-  }
-  file.close();
-  esp_camera_fb_return(fb); 
-  
-  // Turns off the ESP32-CAM white on-board LED (flash) connected to GPIO 4
-  pinMode(4, OUTPUT);
-  digitalWrite(4, LOW);
-  rtc_gpio_hold_en(GPIO_NUM_4);
-  
-  delay(2000);
-  Serial.println("Going to sleep now");
-  delay(2000);
-  esp_deep_sleep_start();
-  Serial.println("This will never be printed");
 }
 
 void loop() {
-  
+  // take picture
+  camera_fb_t * fb = NULL;
+  esp_err_t res = ESP_OK;
+
+  fb = esp_camera_fb_get();
+
+  if(!fb) {
+    Serial.println("Camera capture failed");
+    res = ESP_FAIL;
+  }
+  // classify
+  else{
+    GetImage(fb, cnn->getInput());
+    cnn->predict();
+    float pred = cnn->getOuput()->data.f[0];
+    // write to sd if car
+    if(pred > 0.5) {
+      EEPROM.begin(EEPROM_SIZE);
+      pictureNumber = EEPROM.read(0) + 1;
+
+      // Path where new picture will be saved in SD Card
+      String path = "/picture" + String(pictureNumber) +".jpg";
+
+      fs::FS &fs = SD_MMC; 
+      Serial.printf("Picture file name: %s\n", path.c_str());
+      
+      File file = fs.open(path.c_str(), FILE_WRITE);
+      if(!file){
+        Serial.println("Failed to open file in writing mode");
+      } 
+      else {
+        file.write(fb->buf, fb->len); // payload (image), payload length
+        Serial.printf("Saved file to path: %s\n", path.c_str());
+        EEPROM.write(0, pictureNumber);
+        EEPROM.commit();
+      }
+      file.close();
+    }
+    String path = "/predictions";
+    fs::FS &fs = SD_MMC;
+    File file = fs.open(path.c_str(), FILE_WRITE);
+    const String pred_str = String(pred);
+    file.print(pred_str);
+    file.close();
+  }
+  esp_camera_fb_return(fb); 
+  // sleep 2 seconds
+  //delay(2000);
 }

@@ -10,12 +10,6 @@ CNN::CNN() {
     static tflite::MicroErrorReporter micro_error_reporter;
     error_reporter = &micro_error_reporter;
 
-    printf("Free heap: %d\n", ESP.getFreeHeap());
-    printf("largest size (8bit): %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
-    printf("largest size (default): %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_DEFAULT));
-    printf("largest size (spiram): %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
-    printf("largest size (internal): %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL));
-
     // get model (.tflite) from flash
     model = tflite::GetModel(_tmp_mobilenetv2_saved_model_tflite);
     if (model->version() != TFLITE_SCHEMA_VERSION)
@@ -24,7 +18,6 @@ CNN::CNN() {
         "Model provided is schema version %d not equal "
         "to supported version %d.",
         model->version(), TFLITE_SCHEMA_VERSION);
-    return;
         return;
     }
 
@@ -54,27 +47,14 @@ CNN::CNN() {
         MicroPrintf("AllocateTensors() failed");
         return;
     }
-
     size_t used_bytes = interpreter->arena_used_bytes();
     MicroPrintf("Used bytes %d\n", used_bytes);
 
     // Obtain pointers to the model's input and output tensors.
     input = interpreter->input(0);
     output = interpreter->output(0);
-
-    printf("tensor_arena: %p, input: %p\n", tensor_arena, input->data.uint8);
-    printf("input->dims->size: %d\n", input->dims->size);
-    printf("input->dims->data[0]: %d\n", input->dims->data[0]);
-    printf("input->dims->data[1]: %d\n", input->dims->data[1]);
-    printf("input->dims->data[2]: %d\n", input->dims->data[2]);
-    printf("input->dims->data[3]: %d\n", input->dims->data[3]);
-    printf("input->type: %d\n", input->type);
-    printf("input->params.scale: %.3f\n", input->params.scale);
-    printf("input->params.zero_point: %d\n", input->params.zero_point);
-    
     float scale = output->params.scale;
     int zero_point = output->params.zero_point; 
-    printf("output scale=%.3f, zero_point=%d\n", scale, zero_point);
 }
 
 TfLiteTensor* CNN::getInput() {
