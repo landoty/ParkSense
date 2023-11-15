@@ -21,15 +21,15 @@
 
 // Including tensorflow libs
 
-#include <TensorFlowLite_ESP32.h>
-#include "tensorflow/lite/micro/kernels/micro_ops.h"
-#include "tensorflow/lite/micro/micro_error_reporter.h"
-#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
-#include "tensorflow/lite/micro/micro_interpreter.h"
-#include "tensorflow/lite/schema/schema_generated.h"
+//#include <TensorFlowLite_ESP32.h>
+///#include "tensorflow/lite/micro/kernels/micro_ops.h"
+//#include "tensorflow/lite/micro/micro_error_reporter.h"
+//#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
+//#include "tensorflow/lite/micro/micro_interpreter.h"
+//#include "tensorflow/lite/schema/schema_generated.h"
 
 // our model
-#include "model.h"
+#include "custom_model.h"
 
 // define the number of bytes you want to access
 #define EEPROM_SIZE 1
@@ -84,7 +84,6 @@ int GetImage(camera_fb_t * fb, TfLiteTensor* input)
     for (int y = 0; y < INPUT_H; y++) {
         for (int x = 0; x < INPUT_W; x++) {
             int getPos = (starty + y) * fb->width + startx + x;
-             MicroPrintf("input[%d]: fb->buf[%d]=%d\n", post, getPos, fb->buf[getPos]);
             uint16_t color = ((uint16_t *)fb->buf)[getPos];
             uint32_t rgb = rgb565torgb888(color);
 
@@ -127,12 +126,12 @@ void setup() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.frame_size = FRAMESIZE_96X96;
   config.pixel_format = PIXFORMAT_RGB565; // PIXFORMAT_JPEG; // for streaming
   config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
   config.fb_location = CAMERA_FB_IN_PSRAM;
-  config.jpeg_quality = 12;
-  config.fb_count = 1;
+  config.frame_size = FRAMESIZE_SVGA;
+    config.jpeg_quality = 12;
+    config.fb_count = 1;
   
   cnn = new CNN();
   
@@ -170,9 +169,13 @@ void loop() {
   }
   // classify
   else{
+    Serial.println("image taken");
     GetImage(fb, cnn->getInput());
+    Serial.println("making prediction");
     cnn->predict();
     float pred = cnn->getOuput()->data.f[0];
+    Serial.printf("Prediction: %6.4f\n", pred);
+
     // write to sd if car
     if(pred > 0.5) {
       EEPROM.begin(EEPROM_SIZE);
@@ -196,14 +199,15 @@ void loop() {
       }
       file.close();
     }
-    String path = "/predictions";
+    String path = "/predictions.txt";
     fs::FS &fs = SD_MMC;
-    File file = fs.open(path.c_str(), FILE_WRITE);
-    const String pred_str = String(pred);
+    File file = fs.open(path.c_str(), FILE_APPEND);
+    const String pred_str = String(pred) + "\n";
     file.print(pred_str);
     file.close();
   }
   esp_camera_fb_return(fb); 
-  // sleep 2 seconds
-  delay(2000);
+  pinMode(4, OUTPUT);
+  digitalWrite(4, LOW);
+  rtc_gpio_hold_en(GPIO_NUM_4);
 }
