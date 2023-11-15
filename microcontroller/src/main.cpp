@@ -1,16 +1,12 @@
 /*********
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
-  
-  IMPORTANT!!! 
-   - Select Board "AI Thinker ESP32-CAM"
-   - GPIO 0 must be connected to GND to upload a sketch
-   - After connecting GPIO 0 to GND, press the ESP32-CAM on-board RESET button to put your board in flashing mode
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
+ Name: main.cpp
+ Authors: Landen Doty, Sepehr Noori
+ Description: Main driver code for parksense application
+ Date: 11/5/2023
+
+ Adapted from: 
+    https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
+    https://www.instructables.com/ESP32-CAM-Person-Detection-Expreiment-With-TensorF/
 *********/
 
 #include "esp_camera.h"
@@ -108,7 +104,9 @@ void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
 
   Serial.begin(115200);
-  Serial.setDebugOutput(true);
+  while(!Serial);
+  Serial.setDebugOutput(false);
+  
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -207,5 +205,5 @@ void loop() {
   }
   esp_camera_fb_return(fb); 
   // sleep 2 seconds
-  //delay(2000);
+  delay(2000);
 }
