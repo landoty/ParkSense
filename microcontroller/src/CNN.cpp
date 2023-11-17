@@ -1,5 +1,6 @@
 #include "CNN.h"
-#include "custom_model.h"
+//#include "custom_model.h"
+#include "mobilenet_v2_int8.h"
 
 #include <esp_attr.h>
 #include <Arduino.h>
@@ -11,7 +12,7 @@ CNN::CNN() {
     error_reporter = &micro_error_reporter;
 
     // get model (.tflite) from flash
-    model = tflite::GetModel(_content_custom_convs_saved_model_int8_tflite);
+    model = tflite::GetModel(_mobilenet_v2_int8);
     if (model->version() != TFLITE_SCHEMA_VERSION)
     {
         error_reporter->Report(
@@ -21,7 +22,7 @@ CNN::CNN() {
         return;
     }
 
-    static tflite::MicroMutableOpResolver<11> resolver;
+    static tflite::MicroMutableOpResolver<14> resolver;
     resolver.AddAveragePool2D();
     resolver.AddConv2D();
     resolver.AddMaxPool2D();
@@ -33,6 +34,9 @@ CNN::CNN() {
     resolver.AddLogistic();
     resolver.AddQuantize();
     resolver.AddDequantize();
+    resolver.AddMul();
+    resolver.AddSub();
+    resolver.AddAdd();
 
     tensor_arena = (uint8_t *)heap_caps_malloc(kTensorArenaSize, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     if (tensor_arena == NULL)
