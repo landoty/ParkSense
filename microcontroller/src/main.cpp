@@ -57,6 +57,9 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
+const String path_pred = "/predictions.txt";
+const String path_img = "/image";
+
 int pictureNumber = 0;
 
 CNN *cnn;
@@ -176,32 +179,30 @@ void loop() {
     float pred = cnn->getOuput()->data.f[0];
     Serial.printf("Prediction: %6.4f\n", pred);
 
+    EEPROM.begin(EEPROM_SIZE);
+    pictureNumber = EEPROM.read(0) + 1;
+    fs::FS &fs = SD_MMC;
+
     // write to sd if car
     if(pred > 0.5) {
       Serial.printf("Car!");
+
+      String path = path_img + String(pictureNumber) + ".jpg";
+      File pic_file = fs.open(path.c_str(), FILE_WRITE);
+      pic_file.write(fb->buf, fb->len);
+      pic_file.close();
     }
 
-    EEPROM.begin(EEPROM_SIZE);
-      pictureNumber = EEPROM.read(0) + 1;
-
-      // Path where new picture will be saved in SD Card
-      String path = "/prediction" + String(pictureNumber);
-
-      fs::FS &fs = SD_MMC; 
-
-      File file = fs.open(path.c_str(), FILE_WRITE);
-      if(!file){
-        Serial.println("Failed to open file in writing mode");
-      } 
-      else {
-        file.print(String(pred)); // payload (image), payload length
-        EEPROM.write(0, pictureNumber);
-        EEPROM.commit();
-      }
-      file.close();
+    File pred_file = fs.open(path_pred.c_str(), FILE_APPEND);
+    if(!pred_file){
+      Serial.println("Failed to open file in writing mode");
+    } 
+    else {
+      pred_file.print("Prediction " + String(pictureNumber) + ": " + String(pred) + "\n"); // payload (image), payload length
+    }
+    pred_file.close();
+    EEPROM.write(0, pictureNumber);
+    EEPROM.commit();
   }
   esp_camera_fb_return(fb); 
-  pinMode(4, OUTPUT);
-  digitalWrite(4, LOW);
-  rtc_gpio_hold_en(GPIO_NUM_4);
 }
