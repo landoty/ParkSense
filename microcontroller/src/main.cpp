@@ -178,33 +178,27 @@ void loop() {
 
     // write to sd if car
     if(pred > 0.5) {
-      EEPROM.begin(EEPROM_SIZE);
+      Serial.printf("Car!");
+    }
+
+    EEPROM.begin(EEPROM_SIZE);
       pictureNumber = EEPROM.read(0) + 1;
 
       // Path where new picture will be saved in SD Card
-      String path = "/picture" + String(pictureNumber) +".jpg";
+      String path = "/prediction" + String(pictureNumber);
 
       fs::FS &fs = SD_MMC; 
-      Serial.printf("Picture file name: %s\n", path.c_str());
-      
+
       File file = fs.open(path.c_str(), FILE_WRITE);
       if(!file){
         Serial.println("Failed to open file in writing mode");
       } 
       else {
-        file.write(fb->buf, fb->len); // payload (image), payload length
-        Serial.printf("Saved file to path: %s\n", path.c_str());
+        file.print(String(pred)); // payload (image), payload length
         EEPROM.write(0, pictureNumber);
         EEPROM.commit();
       }
       file.close();
-    }
-    String path = "/predictions.txt";
-    fs::FS &fs = SD_MMC;
-    File file = fs.open(path.c_str(), FILE_APPEND);
-    const String pred_str = String(pred) + "\n";
-    file.print(pred_str);
-    file.close();
   }
   esp_camera_fb_return(fb); 
   pinMode(4, OUTPUT);
