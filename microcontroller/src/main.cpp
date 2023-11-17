@@ -157,7 +157,7 @@ void setup() {
     Serial.println("No SD Card attached");
     return;
   }
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
 }
 
 void loop() {
