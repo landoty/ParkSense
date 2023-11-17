@@ -157,10 +157,12 @@ void setup() {
     Serial.println("No SD Card attached");
     return;
   }
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
 }
 
 void loop() {
   // take picture
+  esp_light_sleep_start();
   camera_fb_t * fb = NULL;
   esp_err_t res = ESP_OK;
 
