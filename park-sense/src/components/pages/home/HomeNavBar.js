@@ -17,6 +17,7 @@ import AaronHorton from './team/AaronHorton.js';
 import TroyDamico from './team/TroyDamico.js';
 import SepehrNoori from './team/SepehrNoori.js';
 import LandenDoty from './team/LandenDoty.js';
+import EmailForm from './contact/EmailForm.js'
 
 export default function HomeNavBar()
 {
@@ -79,7 +80,12 @@ export default function HomeNavBar()
                         </div>
                     </div>
                     }
-                {active === "Contact Us"}
+                {active === "Contact Us" &&
+                    <div>
+                        <center><h1>Contact Us</h1></center>
+                        <EmailForm></EmailForm>
+                    </div>
+                    }
             </div>
         </div>
     )
