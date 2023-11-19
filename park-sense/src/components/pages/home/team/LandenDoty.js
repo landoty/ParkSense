@@ -6,7 +6,7 @@ Date: 11/7/23
 */
 
 import React from 'react';
-import headshot from "./../../../../img/home-img/SepehrNoori.png"
+import headshot from "./../../../../img/home-img/LandenDoty.png"
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function LandenDoty() {
