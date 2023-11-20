@@ -1,3 +1,10 @@
+/*********
+ Name: CNN.cpp
+ Authors: Landen Doty, Sepehr Noori
+ Description: Implementation file for CNN object
+ Date: 11/16/2023
+*********/
+
 #include "CNN.h"
 //#include "custom_model.h"
 #include "mobilenet_v2_int8.h"
@@ -22,6 +29,7 @@ CNN::CNN() {
         return;
     }
 
+    // add operators needed to the resolver
     static tflite::MicroMutableOpResolver<14> resolver;
     resolver.AddAveragePool2D();
     resolver.AddConv2D();
@@ -38,6 +46,7 @@ CNN::CNN() {
     resolver.AddSub();
     resolver.AddAdd();
 
+    // allocated space for the model
     tensor_arena = (uint8_t *)heap_caps_malloc(kTensorArenaSize, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     if (tensor_arena == NULL)
     {

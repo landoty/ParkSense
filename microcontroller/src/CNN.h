@@ -1,3 +1,10 @@
+/*********
+ Name: CNN.cpp
+ Authors: Landen Doty, Sepehr Noori
+ Description: Header file for CNN object
+ Date: 11/16/2023
+*********/
+
 #ifndef __CNN__
 #define __CNN__ 
 
@@ -20,12 +27,19 @@ namespace tflite
 
 class CNN {
     private:
+        // operator resolver
         tflite::MicroMutableOpResolver<4> *resolver;
+        // model itself
         const tflite::Model *model; 
+        // interpreter to run inference
         tflite::MicroInterpreter *interpreter;
+        // error reporter
         tflite::ErrorReporter* error_reporter = nullptr;
+        // input tensor
         TfLiteTensor *input;
+        // output tensor
         TfLiteTensor *output;
+        // arena to hold in/out intermediaries
         uint8_t *tensor_arena;
     
     public:

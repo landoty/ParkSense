@@ -2,11 +2,12 @@
  Name: main.cpp
  Authors: Landen Doty, Sepehr Noori
  Description: Main driver code for parksense application
- Date: 11/5/2023
+ Date: 11/16/2023
 
  Adapted from: 
     https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
     https://www.instructables.com/ESP32-CAM-Person-Detection-Expreiment-With-TensorF/
+    Examples from EECS700, taught by Dr. Heechul Yun
 *********/
 
 #include "esp_camera.h"
@@ -77,6 +78,7 @@ uint32_t rgb565torgb888(uint16_t color)
     return (r << 16) | (g << 8) | b;
 }
 
+// converts the image to rgb888 format and updates the input tensor
 int GetImage(camera_fb_t * fb, TfLiteTensor* input) 
 {
     assert(fb->format == PIXFORMAT_RGB565);
@@ -157,15 +159,17 @@ void setup() {
     Serial.println("No SD Card attached");
     return;
   }
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
+  // enables the gpio pin to "wakeup" the MCU on low singal
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
 }
 
 void loop() {
-  // take picture
+  // sleep the MCU until woken by gpio 13
   esp_light_sleep_start();
+
+  // take picture
   camera_fb_t * fb = NULL;
   esp_err_t res = ESP_OK;
-
   fb = esp_camera_fb_get();
 
   if(!fb) {
@@ -177,6 +181,7 @@ void loop() {
     Serial.println("image taken");
     GetImage(fb, cnn->getInput());
     Serial.println("making prediction");
+    // do inference
     cnn->predict();
     float pred = cnn->getOuput()->data.f[0];
     Serial.printf("Prediction: %6.4f\n", pred);
