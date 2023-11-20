@@ -17,7 +17,7 @@ import AaronHorton from './team/AaronHorton.js';
 import TroyDamico from './team/TroyDamico.js';
 import SepehrNoori from './team/SepehrNoori.js';
 import LandenDoty from './team/LandenDoty.js';
-import EmailForm from './contact/EmailForm.js'
+import EmailForm from './contact/EmailForm.js';
 
 export default function HomeNavBar()
 {
