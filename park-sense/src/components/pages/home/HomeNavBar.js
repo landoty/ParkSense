@@ -7,15 +7,17 @@ Date: 10/25/23
 import React, {useState} from 'react'; 
 import { TabMenu } from 'primereact/tabmenu';
 import "primereact/resources/themes/lara-light-blue/theme.css";
-import WhatIsParkSense from './WhatIsParkSense';
+import WhatIsParkSense from './about/WhatIsParkSense';
 import AboutImage from './../../../img/home-img/lot1.jpg';
 import TeamImage from './../../../img/home-img/lot2.jpg';
 import ContactImage from './../../../img/home-img/lot3.jpg';
-import HowItWorks from './HowItWorks';
-import SamAldeguer from './SamAldeguer';
-import AaronHorton from './AaronHorton';
-import TroyDamico from './TroyDamico.js';
-import SepehrNoori from './SepehrNoori.js';
+import HowItWorks from './about/HowItWorks.js';
+import SamAldeguer from './team/SamAldeguer.js';
+import AaronHorton from './team/AaronHorton.js';
+import TroyDamico from './team/TroyDamico.js';
+import SepehrNoori from './team/SepehrNoori.js';
+import LandenDoty from './team/LandenDoty.js';
+import EmailForm from './contact/EmailForm.js';
 
 export default function HomeNavBar()
 {
@@ -45,10 +47,9 @@ export default function HomeNavBar()
                 .HomeImages {
                     width: 100%;
                 }
-                .Alignment {
+                .CardRow {
                     display: flex;
                     float: left;
-                    width: 30%;
                 }
             `}
             </style>
@@ -66,16 +67,25 @@ export default function HomeNavBar()
                         <HowItWorks></HowItWorks>
                     </div>}
                 {active === "Team" &&
-                    <div>
-                        <center><div className="Alignment">
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <h1>Meet the Team</h1>
+                        <div className="CardRow">
                             <SamAldeguer></SamAldeguer>
                             <AaronHorton></AaronHorton>
                             <TroyDamico></TroyDamico>
+                        </div>
+                        <div className="CardRow">
                             <SepehrNoori></SepehrNoori>
-                        </div></center>
+                            <LandenDoty></LandenDoty>
+                        </div>
                     </div>
                     }
-                {active === "Contact Us"}
+                {active === "Contact Us" &&
+                    <div>
+                        <center><h1>Contact Us</h1></center>
+                        <EmailForm></EmailForm>
+                    </div>
+                    }
             </div>
         </div>
     )
