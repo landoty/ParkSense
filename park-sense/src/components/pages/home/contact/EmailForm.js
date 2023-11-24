@@ -7,70 +7,91 @@ Date: 11/19/23
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
 import "primereact/resources/themes/lara-light-blue/theme.css";
 
 export default function EmailForm(){
     const form = useRef(null);
+    const toast = useRef(null);
+
+    const showToastSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'We have received your message!', life: 3000});
+    }
+
+    const showToastError = () => {
+        toast.current.show({severity:'error', summary: 'Error', detail:'Please fill in all fields.', life: 3000});
+      };
+
     const sendEmail = (e) => {
       e.preventDefault();
+
+      if (!(form.current['from_name'].value) || !(form.current['from_email'].value) || !(form.current['message'].value)) {
+        showToastError();
+        return;
+      }
+
       emailjs.sendForm('service_xtydq8j', 'template_5izwirw', form.current, 'eWLEQXXLNuhnD7LSe')
         .then((result) => {
             e.target.reset();
+            showToastSuccess();
         });
     };
-    return(
+    return (
         <div>
-        <style>
-        {`
-            .EFText {
-                font-size: 22px;
-            }
-            
-            input[type=text], input[type=email], select, textarea {
-                width: 100%;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                resize: vertical;
-            }
+            <style>
+            {`
+                .EFText {
+                    font-size: 22px;
+                }
 
-            textarea {
-                height: 150px;
-            }
+                .messageHeight {
+                    height: 150px;
+                }
+                
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                    width: 500px;
+                }
             
-            label {
-                padding: 12px 12px 12px 0;
-                display: inline-block;
-                float: left;
-            }
-            
-            .container {
-                border-radius: 5px;
-                background-color: #f2f2f2;
-                padding: 20px;
-                width: 60%
-            }
-        `}
-        </style>
+                input, textarea {
+                    padding: 10px;
+                    margin-bottom: 16px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    width: 100%;
+                }
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            `}
+            </style>
             <center><p className="EFText">Do you have any suggestions or concerns for us? Let us know with the form below! We will try to address them as soon as possible.</p></center>
-            <center><div className="container">
-                <form ref={form} onSubmit={sendEmail}>
-                    <div className="row">
-                        <label>Name</label>
-                        <input type="text" name="from_name"/>
-                    </div>
-                    <div className="row">
-                        <label>Email</label>
-                        <input type="email" name="from_email"/>
-                    </div>
-                    <div className="row">
-                        <label>Message</label>
-                        <textarea name="message"/>
-                    </div>
-                    <br></br>
-                    <Button label="Submit" type="submit"/>
-                </form>
-            </div></center>
+            <center>
+                <div>
+                    <form ref={form} onSubmit={sendEmail}>
+                        <div>
+                            <label>Name:</label>
+                            <input type="text" name="from_name"/>
+                        </div>
+                        <div>
+                            <label>Email:</label>
+                            <input type="email" name="from_email"/>
+                        </div>
+                        <div>
+                            <label>Message:</label>
+                            <textarea name="message" className="messageHeight"/>
+                        </div>
+                        <Toast ref={toast} />
+                        <Button label="Submit" type="submit"/>
+                    </form>
+                </div>
+            </center>
         </div>
     );
 }
