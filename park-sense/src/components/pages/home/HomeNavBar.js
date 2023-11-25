@@ -71,12 +71,12 @@ export default function HomeNavBar()
                         <h1>Meet the Team</h1>
                         <div className="CardRow">
                             <SamAldeguer></SamAldeguer>
-                            <AaronHorton></AaronHorton>
                             <TroyDamico></TroyDamico>
+                            <LandenDoty></LandenDoty>
                         </div>
                         <div className="CardRow">
+                            <AaronHorton></AaronHorton>
                             <SepehrNoori></SepehrNoori>
-                            <LandenDoty></LandenDoty>
                         </div>
                     </div>
                     }
