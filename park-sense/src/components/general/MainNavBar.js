@@ -33,7 +33,7 @@ export default function MainNavBar(){
         }
     ];
 
-    const start = <img alt="logo" src={logo2} height="40" className="mr-2"></img>;
+    const start = <a href="/"><img alt="logo" src={logo2} height="40" className="mr-2"></img></a>;
     const end = <InputText placeholder="Search Lot" type="text" className="w-full" />;
     return (
         <Menubar model={items} start={start} end={end} />
