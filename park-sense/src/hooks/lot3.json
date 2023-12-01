@@ -1,9 +1,12 @@
 {
-    "lot" : "lot3",
-    "pass" :"Red",
+    "lot" : "E. Kansas Union (Lot 16)",
+    "pass" :"Gold",
     "hours": "7:15 a.m. to 4:15 p.m.",
     "amenities":[
+        "Kansas Union",
         "Jayhawk Blvd",
-        "Kansas Union"
+        "Jayhawk Cafe",
+        "The Wagon Wheel",
+        "Bullwinkle's"
     ]
 }

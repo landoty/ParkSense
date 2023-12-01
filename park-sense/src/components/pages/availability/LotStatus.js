@@ -33,31 +33,32 @@ export default function LotStatus(currentLotId){
                             </p>
                             <ul>
                                 {
+                                generalInfo.amenities ? (
                                 generalInfo.amenities.map((amenity, index) => (
                                     <li key={index}>{amenity}</li>
-                                ))
+                                ))):(<p></p>)
                                 }
                             </ul>
                         </Fieldset>
                     </div>
                     <div className='info2'>
-                        <Fieldset legend='Title 2'>
+                        <Fieldset legend='Average Busy Times'>
                             <p className='m-0'>
-                                Extra Statistics/Info 2
+                                Graph showing average capacity over one day/one week
                             </p>
                         </Fieldset>
                     </div>
                     <div className='info3'>
-                        <Fieldset legend='Title 3'>
+                        <Fieldset legend='Image on Map'>
                             <p className='m-0'>
-                                Extra Statistics/Info 3
+                                Image of the parking lot on a map
                             </p>
                         </Fieldset>
                     </div>
                     <div className='info4'>
-                        <Fieldset legend='Title 4'>
+                        <Fieldset legend='Actual Image of Lot'>
                             <p className='m-0'>
-                                Extra Statistics/Info 4
+                                Image of the parking lot
                             </p>
                         </Fieldset>
                     </div>

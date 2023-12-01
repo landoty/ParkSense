@@ -1,9 +1,10 @@
 {
-    "lot" : "lot1",
-    "pass" : "Yellow",
+    "lot" : "Allen Fieldhouse Parking Garage (AFPK)",
+    "pass" : "Parking Garage (pay-by-plate)",
     "hours": "7:00 a.m. to 5:00 p.m.",
     "amenities":[
-        "Rec Center",
-        "Capital Federal Hall"
+        "Allen Fieldhouse",
+        "DeBruce Center",
+        "Engineering"
     ]
 }

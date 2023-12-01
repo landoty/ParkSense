@@ -12,7 +12,21 @@ export const useGetLotInformation = (lotName) => {
         const fetchData = async () => {
         try {
             if (lotName.currentLotId != null){
-                const data = require(`./${lotName.currentLotId}.json`);
+                let filename = '';
+                switch (lotName.currentLotId){
+                    case 'Allen Fieldhouse Parking Garage (AFPK)':
+                        filename = 'lot1';
+                        break;
+                    case 'Rec Center (Lot 90)':
+                        filename = 'lot2';
+                        break;
+                    case 'E. Kansas Union (Lot 16)':
+                        filename = 'lot3';
+                        break;
+                    default:
+                        console.log("Error");
+                }
+                const data = require(`./${filename}.json`);
                 setJsonData(data);
             }
         } catch (error) {
