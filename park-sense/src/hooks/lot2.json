@@ -1,0 +1,10 @@
+
+{
+    "lot" : "lot2",
+    "pass" :"Blue",
+    "hours": "7:30 a.m. to 4:30 p.m.",
+    "amenities":[
+        "Allen Fieldhouse",
+        "Engineering"
+    ]
+}

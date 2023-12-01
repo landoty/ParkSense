@@ -1,0 +1,9 @@
+{
+    "lot" : "lot3",
+    "pass" :"Red",
+    "hours": "7:15 a.m. to 4:15 p.m.",
+    "amenities":[
+        "Jayhawk Blvd",
+        "Kansas Union"
+    ]
+}

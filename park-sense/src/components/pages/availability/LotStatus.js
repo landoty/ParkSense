@@ -5,24 +5,39 @@ Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/05/23
 */
 import { useGetSingleLotData } from '../../../hooks/useGetSingleLotData';
+import { useGetLotInformation } from '../../../hooks/useGetLotInformation';
 import './styles.css';
 import { Fieldset } from 'primereact/fieldset';
 
 export default function LotStatus(currentLotId){
-    const userData = useGetSingleLotData(currentLotId);
+    const capacityInfo = useGetSingleLotData(currentLotId);
+    const generalInfo = useGetLotInformation(currentLotId);
     return(
         <div>
             {currentLotId.currentLotId ? (
                 <div className='grid-container'>
                     <center className='header'>
-                        <h1>{userData.capacity - userData.cars} Available Spots</h1>
-                        <p>({userData.cars}/{userData.capacity} occupied)</p>
+                        <h1>{capacityInfo.capacity - capacityInfo.cars} Available Spots</h1>
+                        <p>({capacityInfo.cars}/{capacityInfo.capacity} occupied)</p>
                     </center>
                     <div className='info1'>
-                        <Fieldset legend='Title 1'>
+                        <Fieldset legend='Lot Information'>
                             <p className='m-0'>
-                                Extra Statistics/Info 1
+                                Parking Pass: {generalInfo.pass}
                             </p>
+                            <p className='m-0'>
+                                Hours Enforced: {generalInfo.hours}
+                            </p>
+                            <p className='m-0'>
+                                Nearby Amenities:
+                            </p>
+                            <ul>
+                                {
+                                generalInfo.amenities.map((amenity, index) => (
+                                    <li key={index}>{amenity}</li>
+                                ))
+                                }
+                            </ul>
                         </Fieldset>
                     </div>
                     <div className='info2'>

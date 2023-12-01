@@ -6,7 +6,7 @@ Date: 10/20/23
 */
 import { useEffect, useState } from "react";
 
-export const useGetSingleLotData = () => {
+export const useGetAllData = () => {
     const [userData, setUserData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
