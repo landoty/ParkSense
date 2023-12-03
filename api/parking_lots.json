@@ -1,5 +1,5 @@
 {
-        "lot1" : {"capacity": 100, "cars": 0},
-        "lot2" : {"capacity": 150, "cars": 0},
-        "lot3" : {"capacity": 200, "cars": 0}
+        "Allen Fieldhouse Parking Garage (AFPK)" : {"capacity": 300, "cars": 138},
+        "Rec Center (Lot 90)" : {"capacity": 600, "cars": 491},
+        "E. Kansas Union (Lot 16)" : {"capacity": 80, "cars": 35}
 }

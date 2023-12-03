@@ -1,17 +1,17 @@
 /*
-Name: useGetAllData.js
-Description:  React Hook that makes API call and returns all data
+Name: useGetLotNames.js
+Description:  React Hook that makes API call and returns all parking lot names
 Authors: Troy D'Amico
-Date: 10/20/23
+Date: 12/1/23
 */
 import { useEffect, useState } from "react";
 
-export const useGetAllData = () => {
+export const useGetLotNames = () => {
     const [userData, setUserData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const response = await fetch('/api/parking-lots');
+            const response = await fetch('/api/lot-names');
             const data = await response.json();
             setUserData(data);
         } catch (error) {
