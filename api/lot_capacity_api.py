@@ -14,7 +14,7 @@ import json
 # Init the app and api objects
 app = Flask(__name__)
 api = Api(app)
-auth = Authenticator("./authentication/auth.db")
+#auth = Authenticator("./authentication/auth.db")
 
 # Init parking lot capacities
 lot_file = open("./parking_lots.json")
@@ -53,14 +53,14 @@ class ParkingLot(Resource):
     def post(self, lot_name):
         # Parse parameter
         args = parser.parse_args()
-        if not(hasattr(args, 'update') and hasattr(args,'auth')):
+        if not(hasattr(args, 'update')): #and hasattr(args,'auth')):
             return {'message': 'Insufficient arguments'}, 404
 
         update = args['update']
-        auth_hash = args['auth']
+        #auth_hash = args['auth']
         
-        if not auth.authenticate(lot_name, auth_hash):
-            return {'message': 'Device authentication failed'}, 401
+        #if not auth.authenticate(lot_name, auth_hash):
+        #    return {'message': 'Device authentication failed'}, 401
 
         # normalize update value to 1 or -1
         if update > 0:
