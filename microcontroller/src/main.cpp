@@ -2,7 +2,7 @@
  Name: main.cpp
  Authors: Landen Doty, Sepehr Noori
  Description: Main driver code for parksense application
- Date: 11/16/2023
+ Date: 12/3/2023
 
  Adapted from: 
     https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
@@ -11,6 +11,8 @@
 *********/
 
 #include "esp_camera.h"
+#include <WiFi.h>
+#include <WiFiClient.h>
 #include "Arduino.h"
 #include "FS.h"                // SD Card ESP32
 #include "SD_MMC.h"            // SD Card ESP32
@@ -19,15 +21,6 @@
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 #include "CNN.h"
-
-// Including tensorflow libs
-
-//#include <TensorFlowLite_ESP32.h>
-///#include "tensorflow/lite/micro/kernels/micro_ops.h"
-//#include "tensorflow/lite/micro/micro_error_reporter.h"
-//#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
-//#include "tensorflow/lite/micro/micro_interpreter.h"
-//#include "tensorflow/lite/schema/schema_generated.h"
 
 // our model
 #include "custom_model.h"
@@ -57,6 +50,16 @@
 #define VSYNC_GPIO_NUM    25
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
+
+
+#define SETUP_AP 1 // 1=AP, 0=STA
+const char* ssid = "esp32-cam";
+const char* password = "super-strong-password";
+
+const String api_ip = "192.168.4.2";
+const String api_path = "/parking-lot/lot1";
+const int api_port = 5000;
+WiFiClient client;
 
 const String path_pred = "/predictions.txt";
 const String path_img = "/image";
@@ -102,6 +105,24 @@ int GetImage(camera_fb_t * fb, TfLiteTensor* input)
         }
     }
     return 0;
+}
+
+void post_api(String value) {
+  // json data to send to API
+  String body = "{\"update\":" + value + "}";
+  // Connect and build HTTP POST request
+  if(client.connect(api_ip.c_str(), api_port)) {
+    client.println("POST " + api_path + " HTTP/1.1");
+    client.println("Host: " + api_ip);
+    client.println("Content-Type: application/json");
+    client.println("Content-Length: 12");
+    client.println();
+    client.println(body);
+  }
+  else{
+    Serial.println("Couldn't connect to API");
+  }
+  client.stop();
 }
 
 void setup() {
@@ -159,6 +180,24 @@ void setup() {
     Serial.println("No SD Card attached");
     return;
   }
+
+  // Wi-Fi connection
+  // SETUP_AP allows MCU to function as an access point for local testing
+  #if SETUP_AP==1
+    WiFi.softAP(ssid, password);
+    Serial.println("AP available");
+    Serial.println(WiFi.softAPIP());
+  #else
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(500);
+      Serial.print(".");
+    }
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println(WiFi.localIP());
+  #endif
+
   // enables the gpio pin to "wakeup" the MCU on low singal
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
 }
@@ -192,12 +231,15 @@ void loop() {
 
     // write to sd if car
     if(pred > 0.5) {
-      Serial.printf("Car!");
-
+      post_api("1");
       String path = path_img + String(pictureNumber) + ".jpg";
       File pic_file = fs.open(path.c_str(), FILE_WRITE);
       pic_file.write(fb->buf, fb->len);
       pic_file.close();
+    }
+    else{
+      // Just for debugging, remove later
+      post_api("0");
     }
 
     File pred_file = fs.open(path_pred.c_str(), FILE_APPEND);
