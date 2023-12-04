@@ -17,7 +17,7 @@ export default function Availability(){
 
     return(
         <div>
-            <title>Availability</title>
+            <title>Availability | ParkSense</title>
             <center style={{paddingTop:'1%'}}>
                     <LotDropdown onLotSelect={handleLotSelection} />
             </center>
