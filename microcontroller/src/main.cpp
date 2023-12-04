@@ -2,7 +2,7 @@
  Name: main.cpp
  Authors: Landen Doty, Sepehr Noori
  Description: Main driver code for parksense application
- Date: 11/16/2023
+ Date: 12/3/2023
 
  Adapted from: 
     https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
@@ -21,15 +21,6 @@
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 #include "CNN.h"
-
-// Including tensorflow libs
-
-//#include <TensorFlowLite_ESP32.h>
-///#include "tensorflow/lite/micro/kernels/micro_ops.h"
-//#include "tensorflow/lite/micro/micro_error_reporter.h"
-//#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
-//#include "tensorflow/lite/micro/micro_interpreter.h"
-//#include "tensorflow/lite/schema/schema_generated.h"
 
 // our model
 #include "custom_model.h"
@@ -117,8 +108,9 @@ int GetImage(camera_fb_t * fb, TfLiteTensor* input)
 }
 
 void post_api(String value) {
-  //client.setInsecure();
+  // json data to send to API
   String body = "{\"update\":" + value + "}";
+  // Connect and build HTTP POST request
   if(client.connect(api_ip.c_str(), api_port)) {
     client.println("POST " + api_path + " HTTP/1.1");
     client.println("Host: " + api_ip);
@@ -190,6 +182,7 @@ void setup() {
   }
 
   // Wi-Fi connection
+  // SETUP_AP allows MCU to function as an access point for local testing
   #if SETUP_AP==1
     WiFi.softAP(ssid, password);
     Serial.println("AP available");
@@ -206,12 +199,12 @@ void setup() {
   #endif
 
   // enables the gpio pin to "wakeup" the MCU on low singal
-  //esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
 }
 
 void loop() {
   // sleep the MCU until woken by gpio 13
-  //esp_light_sleep_start();
+  esp_light_sleep_start();
 
   // take picture
   camera_fb_t * fb = NULL;
