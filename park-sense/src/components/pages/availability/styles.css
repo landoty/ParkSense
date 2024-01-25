@@ -12,6 +12,7 @@
       'info3 info4';
     /* column-gap: 25%;
     row-gap: 25%; */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     padding: 10px;
 }
