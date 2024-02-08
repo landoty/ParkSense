@@ -6,6 +6,7 @@ Date: 10/05/23
 */
 import { useGetSingleLotData } from '../../../hooks/useGetSingleLotData';
 import { useGetLotInformation } from '../../../hooks/useGetLotInformation';
+import { useGetAvgBusyTimesSingleLot } from '../../../hooks/useGetAvgBusyTimesSingleLot';
 import './styles.css';
 import { Fieldset } from 'primereact/fieldset';
 import AvgBusyTimesChart from '../../general/AvgBusyTimesChart';
@@ -13,6 +14,7 @@ import AvgBusyTimesChart from '../../general/AvgBusyTimesChart';
 export default function LotStatus(currentLotId){
     const capacityInfo = useGetSingleLotData(currentLotId);
     const generalInfo = useGetLotInformation(currentLotId);
+    const avgBusyTimes = useGetAvgBusyTimesSingleLot(currentLotId);
     return(
         <div>
             {currentLotId.currentLotId ? (
@@ -44,7 +46,7 @@ export default function LotStatus(currentLotId){
                     </div>
                     <div className='info2'>
                         <Fieldset legend='Average Busy Times'>
-                            <AvgBusyTimesChart></AvgBusyTimesChart>
+                            <AvgBusyTimesChart avgBusyTimes={avgBusyTimes}></AvgBusyTimesChart>
                         </Fieldset>
                     </div>
                     <div className='info3'>
