@@ -20,6 +20,10 @@ api = Api(app)
 lot_file = open("./parking_lots.json")
 parking_lots = json.load(lot_file)
 
+# Init busy times
+busy_times_file = open("./avg_busy_times.json")
+busy_times = json.load(busy_times_file)
+
 # flask has a really nice built-in class for parsing requests
 # also handles a lot of the security concerns with RCE, RCI, LFI, etc.
 parser = reqparse.RequestParser()
@@ -102,10 +106,20 @@ class ParkingLots(Resource):
 
 class ParkingLotNames(Resource):
     def get(self):
-        return list(parking_lots.keys()), 200 
+        return list(parking_lots.keys()), 200
+
+class AvgBusyTimes(Resource):
+    def get(self, lot_name):
+        # check if requested lot in known lots
+        if lot_name in busy_times:
+            # return current capacity of lot
+            return busy_times[lot_name], 200
+        # default return error 404
+        return {'message': 'Parking lot not found'}, 404
         
 api.add_resource(ParkingLots, '/parking-lots')
 api.add_resource(ParkingLot, '/parking-lot/<string:lot_name>')
 api.add_resource(ParkingLotNames, '/lot-names')
+api.add_resource(AvgBusyTimes, '/avg-busy-times/<string:lot_name>')
 if __name__ == "__main__":
     app.run(debug=True)
