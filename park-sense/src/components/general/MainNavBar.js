@@ -4,13 +4,16 @@ Description: Component to display main navigation bar
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/03/23
 */
-import React from 'react';
+import React, { useState } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
 import { useNavigate } from 'react-router-dom'
+import SearchBar from './SearchBar.js'
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import 'primereact/resources/primereact.min.css';
 import logo2 from "../../img/logos/parksense-logo2.png";
+import { useGetLotNames } from '../../hooks/useGetLotNames';
+
 
 export default function MainNavBar(){
     const navigate = useNavigate();
@@ -33,8 +36,15 @@ export default function MainNavBar(){
         }
     ];
 
+    const [searchResults, setSearchResults] = useState([]);
+    const lotNames = useGetLotNames();
+
+    const handleSearch = (searchText) => {
+        alert(searchText)
+    };
+
     const start = <a href="/"><img alt="logo" src={logo2} height="40" className="mr-2"></img></a>;
-    const end = <InputText placeholder="Search Lot" type="text" className="w-full" />;
+    const end = <SearchBar onSearch={handleSearch}></SearchBar>
     return (
         <Menubar model={items} start={start} end={end} />
     )
