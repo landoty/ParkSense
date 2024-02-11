@@ -40,7 +40,13 @@ export default function MainNavBar(){
     const lotNames = useGetLotNames();
 
     const handleSearch = (searchText) => {
-        alert(searchText)
+        if (lotNames.includes(searchText))
+        {
+            alert("Valid lot")
+        }
+        else {
+            alert ("Lot not found")
+        }
     };
 
     const start = <a href="/"><img alt="logo" src={logo2} height="40" className="mr-2"></img></a>;
