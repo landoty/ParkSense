@@ -4,17 +4,18 @@ Description: Component for search bar on main navigation bar
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 2/10/23
 */
-
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 
 const SearchBar = ({ onSearch }) => {
-    const [searchedLot, setSearchedLot] = useState('');
+    const [searchedLot, setSearchedLot] = useState(null);
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter')
+        {
             e.preventDefault();
-            if (onSearch) {
+            if (onSearch)
+            {
                 onSearch(searchedLot);
             }
         }
@@ -24,7 +25,7 @@ const SearchBar = ({ onSearch }) => {
         <InputText placeholder="Search Lot" type="text" className="w-full"
             value={searchedLot} 
             onChange={(e) => {setSearchedLot(e.target.value)}}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleKeyPress}
         />
     )
 }
