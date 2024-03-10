@@ -6,9 +6,11 @@ Date: 2/25/24
 */
 import React, { useState } from 'react';
 
-const Suggestion = ({suggestion}) => {
+const Suggestion = ({suggestion, onClick}) => {
     return(
-        <div>{suggestion}</div>
+        <div onClick = {() => onClick(suggestion)} style={{cursor: 'pointer'}}>
+            {suggestion}
+        </div>
     )
 }
 

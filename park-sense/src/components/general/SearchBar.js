@@ -40,17 +40,26 @@ const SearchBar = ({ onSearch }) => {
         setSearchSuggestions(suggestions);
     };
 
+    const handleClickSuggestion = (suggestion) => {
+        setSearchSuggestions([]);
+        setSearchedLot(suggestion);
+    };
+
     return (
         <div>
             <InputText 
                 placeholder="Search Lot" 
                 type="text" 
                 className="w-full"
-                value={searchedLot} 
+                value={searchedLot}
                 onChange={(e) => {setSearchedLot(e.target.value)}}
                 onKeyDown={handleKeyPress}
             />
-            <SearchSuggestions suggestions={searchSuggestions}></SearchSuggestions>
+            <div style={{position: 'relative'}}>
+                <div style={{position: 'absolute', width: '100%'}}>
+                    <SearchSuggestions suggestions={searchSuggestions} onClickSuggestion={handleClickSuggestion}></SearchSuggestions>
+                </div>
+            </div>
         </div>
     )
 }

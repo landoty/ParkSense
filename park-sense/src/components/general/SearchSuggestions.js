@@ -7,11 +7,11 @@ Date: 2/25/24
 import React from "react";
 import Suggestion from './Suggestion.js'
 
-const SearchSuggestions = ({suggestions}) => {
+const SearchSuggestions = ({suggestions, onClickSuggestion}) => {
     return (
-        <div>
+        <div style={{background: 'white'}}>
             {suggestions.map((suggestion, key) => {
-                return <Suggestion suggestion={suggestion} key={key}></Suggestion>;
+                return <Suggestion suggestion={suggestion} key={key} onClick={onClickSuggestion}></Suggestion>;
             })}
         </div>
     )

@@ -48,8 +48,6 @@ export default function MainNavBar(){
     const start = <a href="/"><img alt="logo" src={logo2} height="40" className="mr-2"></img></a>;
     const end = <SearchBar onSearch={conductSearch}></SearchBar>
     return (
-        <div>
-            <Menubar model={items} start={start} end={end}/>
-        </div>
+        <Menubar model={items} start={start} end={end}/>
     )
 }
