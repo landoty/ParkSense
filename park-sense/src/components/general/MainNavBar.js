@@ -4,7 +4,7 @@ Description: Component to display main navigation bar
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 10/03/23
 */
-import React, { useState } from 'react';
+import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar.js'

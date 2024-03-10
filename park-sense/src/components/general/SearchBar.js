@@ -47,17 +47,31 @@ const SearchBar = ({ onSearch }) => {
 
     return (
         <div>
-            <InputText 
-                placeholder="Search Lot" 
-                type="text" 
-                className="w-full"
-                value={searchedLot}
-                onChange={(e) => {setSearchedLot(e.target.value)}}
-                onKeyDown={handleKeyPress}
-            />
-            <div style={{position: 'relative'}}>
-                <div style={{position: 'absolute', width: '100%'}}>
-                    <SearchSuggestions suggestions={searchSuggestions} onClickSuggestion={handleClickSuggestion}></SearchSuggestions>
+            <style>
+            {`
+                .outerStyling {
+                    position: relative;
+                }
+
+                .innerStyling {
+                    position: absolute;
+                    width: 100%;
+                }
+            `}
+            </style>
+            <div>
+                <InputText 
+                    placeholder="Search Lot" 
+                    type="text" 
+                    className="w-full"
+                    value={searchedLot}
+                    onChange={(e) => {setSearchedLot(e.target.value)}}
+                    onKeyDown={handleKeyPress}
+                />
+                <div className="outerStyling">
+                    <div className="innerStyling">
+                        <SearchSuggestions suggestions={searchSuggestions} onClickSuggestion={handleClickSuggestion}></SearchSuggestions>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,12 +4,21 @@ Description: Component for each individual suggestion in drop down
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 2/25/24
 */
-import React, { useState } from 'react';
+import React from 'react';
 
 const Suggestion = ({suggestion, onClick}) => {
     return(
-        <div onClick = {() => onClick(suggestion)} style={{cursor: 'pointer'}}>
-            {suggestion}
+        <div>
+            <style>
+            {`
+                .suggestionStyling {
+                    cursor: pointer;
+                }
+            `}
+            </style>
+            <div onClick = {() => onClick(suggestion)} className="suggestionStyling">
+                {suggestion}
+            </div>
         </div>
     )
 }
