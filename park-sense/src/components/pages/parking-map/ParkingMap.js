@@ -71,36 +71,40 @@ class App extends Component {
 
   render() {
 
-    return <MapContainer center={coordinates} zoom={12} style={{height: '850px'}}>
-      <TileLayer
-        attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker position={lot90} icon={new lot90Icon()} eventHandlers={{
-    click: () => {
-      console.log('marker clicked')
-    },
-  }}>
-      </Marker>
+    return ( 
+    <div>
+      <title>Parking Map | ParkSense</title>
+      <MapContainer center={coordinates} zoom={12} style={{height: '850px'}}>
+        <TileLayer
+          attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={lot90} icon={new lot90Icon()} eventHandlers={{
+      click: () => {
+        console.log('marker clicked')
+      },
+    }}>
+        </Marker>
 
-      <Marker position={lot91} icon={new lot91Icon()}>
-        <Popup>
-            <span>
-              A pretty CSS3 popup. <br/> Easily customizable.
-            </span>
-        </Popup>
-      </Marker>
+        <Marker position={lot91} icon={new lot91Icon()}>
+          <Popup>
+              <span>
+                A pretty CSS3 popup. <br/> Easily customizable.
+              </span>
+          </Popup>
+        </Marker>
 
-      <Marker position={lot92} icon={new lot92Icon()}>
-        <Popup>
-            <span>
-              A pretty CSS3 popup. <br/> Easily customizable.
-            </span>
-        </Popup>
-      </Marker>
+        <Marker position={lot92} icon={new lot92Icon()}>
+          <Popup>
+              <span>
+                A pretty CSS3 popup. <br/> Easily customizable.
+              </span>
+          </Popup>
+        </Marker>
 
 
-    </MapContainer>;
+      </MapContainer>;
+    </div>)
 
   }
 }
