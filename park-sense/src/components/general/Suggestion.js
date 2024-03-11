@@ -13,6 +13,8 @@ const Suggestion = ({suggestion, onClick}) => {
             {`
                 .suggestionStyling {
                     cursor: pointer;
+                    color: black;
+                    padding: 5px;
                 }
             `}
             </style>

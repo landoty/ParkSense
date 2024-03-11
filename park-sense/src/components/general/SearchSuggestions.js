@@ -14,6 +14,7 @@ const SearchSuggestions = ({suggestions, onClickSuggestion}) => {
             {`
                 .suggestionsStyling {
                     background: white;
+                    border-radius: 5px;
                 }
             `}
             </style>

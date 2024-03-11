@@ -9,7 +9,7 @@ import { InputText } from 'primereact/inputtext';
 import { useGetLotNames } from '../../hooks/useGetLotNames';
 import SearchSuggestions from './SearchSuggestions.js';
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({onSearch}) => {
     const [searchedLot, setSearchedLot] = useState("");
     const [searchSuggestions, setSearchSuggestions] = useState([]);
     const lotNames = useGetLotNames();
@@ -77,4 +77,5 @@ const SearchBar = ({ onSearch }) => {
         </div>
     )
 }
+
 export default SearchBar;
