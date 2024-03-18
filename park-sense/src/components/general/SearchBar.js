@@ -4,7 +4,7 @@ Description: Component for search bar on main navigation bar
 Authors: Troy D'Amico, Sam Aldeguer, Aaron Horton
 Date: 2/10/24
 */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { useGetLotNames } from '../../hooks/useGetLotNames';
 import SearchSuggestions from './SearchSuggestions.js';
@@ -12,6 +12,7 @@ import SearchSuggestions from './SearchSuggestions.js';
 const SearchBar = ({onSearch}) => {
     const [searchedLot, setSearchedLot] = useState("");
     const [searchSuggestions, setSearchSuggestions] = useState([]);
+    const clickAwayState = useRef(null);
     const lotNames = useGetLotNames();
     
     const handleKeyPress = (e) => {
@@ -41,12 +42,26 @@ const SearchBar = ({onSearch}) => {
     };
 
     const handleClickSuggestion = (suggestion) => {
+        document.getElementById('searchBar').focus();
         setSearchSuggestions([]);
         setSearchedLot(suggestion);
     };
 
+    useEffect(() => { 
+        const handleClickAway = (e) => {
+            if (clickAwayState.current.contains(e.target) == false && clickAwayState.current) 
+            {
+                setSearchSuggestions([]);
+            }
+        };
+        document.addEventListener("mousedown", handleClickAway);
+        return () => {
+            document.removeEventListener("mousedown", handleClickAway);
+        };
+    });
+
     return (
-        <div>
+        <div ref={clickAwayState}>
             <style>
             {`
                 .outerStyling {
@@ -60,7 +75,8 @@ const SearchBar = ({onSearch}) => {
             `}
             </style>
             <div>
-                <InputText 
+                <InputText
+                    id="searchBar" 
                     placeholder="Search Lot" 
                     type="text" 
                     className="w-full"
