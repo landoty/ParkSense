@@ -7,7 +7,9 @@
 
 #include "CNN.h"
 //#include "custom_model.h"
-#include "mobilenet_v2_int8.h"
+// #include "mobilenet_v2_int8.h"
+// #include "new_int8.h"
+#include "tflite_learn_14.h"
 
 #include <esp_attr.h>
 #include <Arduino.h>
@@ -19,7 +21,7 @@ CNN::CNN() {
     error_reporter = &micro_error_reporter;
 
     // get model (.tflite) from flash
-    model = tflite::GetModel(_mobilenet_v2_int8);
+    model = tflite::GetModel(tflite_learn_14);
     if (model->version() != TFLITE_SCHEMA_VERSION)
     {
         error_reporter->Report(

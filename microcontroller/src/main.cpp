@@ -21,11 +21,6 @@
 #include <EEPROM.h>            // read and write from flash memory
 #include "CNN.h"
 
-// our model
-#include "custom_model.h"
-
-// define the number of bytes you want to access
-#define EEPROM_SIZE 1
 
 #define INPUT_W 96
 #define INPUT_H 96
@@ -66,7 +61,7 @@ const String path_img = "/image";
 
 int pictureNumber = 0;
 
-time_t start, inf_time;
+uint64_t start, inf_time;
 
 CNN *cnn;
 
@@ -212,11 +207,11 @@ void loop() {
     // do inference
     start = esp_timer_get_time();
     cnn->predict();
-    infr_time = esp_timer_get_time() - start;
+    inf_time = esp_timer_get_time() - start;
 
     float pred = cnn->getOuput()->data.f[0];
     Serial.printf("Prediction: %6.4f\n", pred);
-    Serial.printf("Infr. Time: %6.2f\n", infr_time);
+    Serial.printf("Infr. Time: %6.2f ms\n", inf_time);
 
 
     // write to sd if car
