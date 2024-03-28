@@ -1,7 +1,5 @@
 {
-        "lotAFPK" : {
-		"name":  "Allen Fieldhouse Parking Garage", "capacity": 300, "cars": 138},
-
-        "lot90" : {"name": "Rec. Center", "capacity": 600, "cars": 491},
-        "lot16" : {"name": "East Kansas Union", "capacity": 80, "cars": 35}
+    "Allen Fieldhouse Parking Garage (AFPK)" : {"capacity": 300, "cars": 138},
+    "Rec Center (Lot 90)" : {"capacity": 600, "cars": 491},
+    "E. Kansas Union (Lot 16)" : {"capacity": 80, "cars": 35}
 }
