@@ -6,13 +6,12 @@ Date: 10/03/23
 */
 
 import ReactDOM from 'react-dom'
-import PropTypes                         from 'prop-types';
-import React, { Component }              from 'react';
+import React from 'react';
 import 'leaflet/dist/leaflet.css';
-import { Map, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-//import lot90Icon from './../../../img/map-img/icon90.png';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import L from "leaflet";
-
+import {BrowserRouter as Router, useNavigate} from 'react-router-dom';
+import { Button } from 'primereact/button';
 
 const coordinates = [38.9500,-95.2510];
 const lot90 = [38.952520, -95.250020];
@@ -67,9 +66,12 @@ var lot92Icon = L.Icon.extend({
    });
 
 
-class App extends Component {
+export default function App() {
+  const navigate = useNavigate();
 
-  render() {
+  const handlePopupClick = (lotName) => {
+    navigate('/availability', { state: { selectedLotId: lotName }});
+  }
 
     return ( 
     <div>
@@ -86,10 +88,22 @@ class App extends Component {
     }}>
         </Marker>
 
+        <Marker position={lot90} icon={new lot90Icon()}>
+          <Popup>
+              <span>
+                <h1>Rec Center</h1>
+                <h4>Lot 90</h4>
+                <Button label="Lot Information" onClick={()=>handlePopupClick("Rec Center (Lot 90)")}></Button>
+              </span>
+          </Popup>
+        </Marker>
+
         <Marker position={lot91} icon={new lot91Icon()}>
           <Popup>
               <span>
-                A pretty CSS3 popup. <br/> Easily customizable.
+                <h1>Rec Center</h1>
+                <h4>Lot 90</h4>
+                <Button label="Lot Information" onClick={()=>handlePopupClick("Rec Center (Lot 90)")}></Button>
               </span>
           </Popup>
         </Marker>
@@ -107,11 +121,10 @@ class App extends Component {
     </div>)
 
   }
-}
-
-export default App;
 ReactDOM.render(
-    <App/>,
+  <Router>
+    <App/>
+  </Router>,
     document.getElementById('root')
 );
 
