@@ -64,7 +64,7 @@ export default function App() {
         }
 
         .fixZoomGlitch {
-          height: calc(100vh-65px);
+          height: calc(100vh - 65px);
         }
       `}
       </style>
