@@ -62,10 +62,14 @@ export default function App() {
         .widthAdjustment {
           width: 210px;
         }
+
+        .fixZoomGlitch {
+          height: calc(100vh-65px);
+        }
       `}
       </style>
       <title>Parking Map | ParkSense</title>
-      <MapContainer center={coordinates} zoom={12} style={{height: '850px'}}>
+      <MapContainer center={coordinates} zoom={12} className="fixZoomGlitch">
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
