@@ -7,19 +7,25 @@
 
 #include "CNN.h"
 //#include "custom_model.h"
+// #include "mobilenet_v2_int8.h"
+// #include "new_int8.h"
+#include "tflite_learn_14.h"
 #include "mobilenet_v2_int8.h"
+#include "ei_model.h"
+#include "mobilenetv2.h"
+#include "model.h"
 
 #include <esp_attr.h>
 #include <Arduino.h>
 
-constexpr int kTensorArenaSize = 3 * 1024 * 1024;
+constexpr int kTensorArenaSize = 361216;
 
 CNN::CNN() {
-    static tflite::MicroErrorReporter micro_error_reporter;
-    error_reporter = &micro_error_reporter;
+    sleep(1);
+    Serial.println("Called constructor");
 
     // get model (.tflite) from flash
-    model = tflite::GetModel(_mobilenet_v2_int8);
+    model = tflite::GetModel(mobilenetv2);
     if (model->version() != TFLITE_SCHEMA_VERSION)
     {
         error_reporter->Report(
@@ -28,53 +34,51 @@ CNN::CNN() {
         model->version(), TFLITE_SCHEMA_VERSION);
         return;
     }
+    Serial.println("Model loaded");
 
     // add operators needed to the resolver
-    static tflite::MicroMutableOpResolver<14> resolver;
-    resolver.AddAveragePool2D();
+    static tflite::MicroMutableOpResolver<13> resolver;
     resolver.AddConv2D();
-    resolver.AddMaxPool2D();
     resolver.AddDepthwiseConv2D();
-    resolver.AddRelu();
     resolver.AddSoftmax();
     resolver.AddReshape();
     resolver.AddFullyConnected();
-    resolver.AddLogistic();
-    resolver.AddQuantize();
-    resolver.AddDequantize();
-    resolver.AddMul();
-    resolver.AddSub();
     resolver.AddAdd();
+    resolver.AddPad();
+    resolver.AddQuantize();
+    resolver.AddMul();
+    resolver.AddMean();
+    resolver.AddLogistic();
+    resolver.AddDequantize();
+    resolver.AddSub();
 
     // allocated space for the model
     tensor_arena = (uint8_t *)heap_caps_malloc(kTensorArenaSize, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     if (tensor_arena == NULL)
     {
-        printf("Couldn't allocate memory of %d bytes\n", kTensorArenaSize);
+        Serial.printf("Couldn't allocate memory of %d bytes\n", kTensorArenaSize);
         return;
     }
-    printf("Free heap: %d\n", ESP.getFreeHeap());
+    Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
     // Build an interpreter to run the model with.
-    static tflite::MicroInterpreter static_interpreter(model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
+    static tflite::MicroInterpreter static_interpreter(model, resolver, tensor_arena, kTensorArenaSize);
     interpreter = &static_interpreter;
 
-    MicroPrintf("interpreter initialization");
+    Serial.println("interpreter initialization");
     // Allocate memory from the tensor_arena for the model's tensors.
     TfLiteStatus allocate_status = interpreter->AllocateTensors();
     if (allocate_status != kTfLiteOk)
     {
-        MicroPrintf("AllocateTensors() failed");
+        Serial.println("AllocateTensors() failed");
         return;
     }
     size_t used_bytes = interpreter->arena_used_bytes();
-    MicroPrintf("Used bytes %d\n", used_bytes);
+    Serial.printf("Used bytes %d\n", used_bytes);
 
     // Obtain pointers to the model's input and output tensors.
     input = interpreter->input(0);
     output = interpreter->output(0);
-    float scale = output->params.scale;
-    int zero_point = output->params.zero_point; 
 }
 
 TfLiteTensor* CNN::getInput() {

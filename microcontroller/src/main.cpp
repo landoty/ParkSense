@@ -11,22 +11,15 @@
 *********/
 
 #include "esp_camera.h"
+#include "esp_timer.h"
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include "Arduino.h"
-#include "FS.h"                // SD Card ESP32
-#include "SD_MMC.h"            // SD Card ESP32
 #include "soc/soc.h"           // Disable brownour problems
 #include "soc/rtc_cntl_reg.h"  // Disable brownour problems
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 #include "CNN.h"
-
-// our model
-#include "custom_model.h"
-
-// define the number of bytes you want to access
-#define EEPROM_SIZE 1
 
 #define INPUT_W 96
 #define INPUT_H 96
@@ -51,20 +44,18 @@
 #define HREF_GPIO_NUM     47
 #define PCLK_GPIO_NUM     13
 
+#define LED_GPIO_NUM      21
 
-#define SETUP_AP 1 // 1=AP, 0=STA
-const char* ssid = "esp32-cam";
-const char* password = "super-strong-password";
+#define SETUP_AP 0 // 1=AP, 0=STA
+const char* ssid = "wireless-ssid"; // change to wirless ssid
+const char* password = "wireless-password"; // change to wireless password
 
-const String api_ip = "192.168.4.2";
-const String api_path = "/parking-lot/lot1";
-const int api_port = 5000;
+const String api_ip = "192.168.1.2"; // change to API IP addr
+const String api_path = "/parking-lot/lot90"; // change to lot name
+const int api_port = 4444; // change to API port
 WiFiClient client;
 
-const String path_pred = "/predictions.txt";
-const String path_img = "/image";
-
-int pictureNumber = 0;
+uint64_t start, inf_time;
 
 CNN *cnn;
 
@@ -156,8 +147,8 @@ void setup() {
   config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
   config.fb_location = CAMERA_FB_IN_PSRAM;
   config.frame_size = FRAMESIZE_SVGA;
-    config.jpeg_quality = 12;
-    config.fb_count = 1;
+  config.jpeg_quality = 12;
+  config.fb_count = 1;
   
   cnn = new CNN();
   
@@ -169,20 +160,9 @@ void setup() {
     return;
   }
   
-  //Serial.println("Starting SD Card");
-  if(!SD_MMC.begin()){
-    Serial.println("SD Card Mount Failed");
-    return;
-  }
-  
-  // uint8_t cardType = SD_MMC.cardType();
-  // if(cardType == CARD_NONE){
-  //   Serial.println("No SD Card attached");
-  //   return;
-  // }
-
-  // Wi-Fi connection
+    // Wi-Fi connection
   // SETUP_AP allows MCU to function as an access point for local testing
+  
   #if SETUP_AP==1
     WiFi.softAP(ssid, password);
     Serial.println("AP available");
@@ -197,15 +177,9 @@ void setup() {
     Serial.println("WiFi connected");
     Serial.println(WiFi.localIP());
   #endif
-
-  // enables the gpio pin to "wakeup" the MCU on low singal
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
 }
 
 void loop() {
-  // sleep the MCU until woken by gpio 13
-  esp_light_sleep_start();
-
   // take picture
   camera_fb_t * fb = NULL;
   esp_err_t res = ESP_OK;
@@ -213,7 +187,6 @@ void loop() {
 
   if(!fb) {
     Serial.println("Camera capture failed");
-    res = ESP_FAIL;
   }
   // classify
   else{
@@ -221,37 +194,25 @@ void loop() {
     GetImage(fb, cnn->getInput());
     Serial.println("making prediction");
     // do inference
+    start = esp_timer_get_time();
     cnn->predict();
-    float pred = cnn->getOuput()->data.f[0];
-    Serial.printf("Prediction: %6.4f\n", pred);
+    inf_time = esp_timer_get_time() - start;
 
-    EEPROM.begin(EEPROM_SIZE);
-    pictureNumber = EEPROM.read(0) + 1;
-    fs::FS &fs = SD_MMC;
+    float * output = tflite::GetTensorData<float>(cnn->getOuput());
+    float prediction = output[0];
 
-    // write to sd if car
-    if(pred > 0.5) {
+    Serial.printf("Prediction: %6.4f\n", prediction);
+    Serial.printf("Infr. Time: %d us\n", inf_time);
+
+
+    if(prediction > 0.5) {
+      Serial.println("Car");
       post_api("1");
-      String path = path_img + String(pictureNumber) + ".jpg";
-      File pic_file = fs.open(path.c_str(), FILE_WRITE);
-      pic_file.write(fb->buf, fb->len);
-      pic_file.close();
     }
     else{
       // Just for debugging, remove later
-      post_api("0");
+      //post_api("0");
     }
-
-    File pred_file = fs.open(path_pred.c_str(), FILE_APPEND);
-    if(!pred_file){
-      Serial.println("Failed to open file in writing mode");
-    } 
-    else {
-      pred_file.print("Prediction " + String(pictureNumber) + ": " + String(pred) + "\n"); // payload (image), payload length
-    }
-    pred_file.close();
-    EEPROM.write(0, pictureNumber);
-    EEPROM.commit();
   }
   esp_camera_fb_return(fb); 
 }
