@@ -15,51 +15,33 @@ import { Button } from 'primereact/button';
 
 const coordinates = [38.9500,-95.2510];
 const lot90 = [38.952520, -95.250020];
-const lot91 = [38.960544, -95.244769];
-const lot92 = [38.962088, -95.244967];
+const lotAFPK = [38.955233, -95.252906];
+const lot16 = [38.959042, -95.242745];
 
-/*const lot90Icon = new L.Icon({
-    //img src={AboutImage}
-    iconURL: require("./../../../img/map-img/icon90.png"),
-    //iconURL: lot90Icon,
-    iconSize: [35,35],
-    //iconAnchor: [17,46],
-    //popupAnchor: [3,-46]
-});*/
-//var lot90Icon = L.icon({iconURL:'./../../../img/map-img/icon90.png'});
 var lot90Icon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
        iconUrl: require('./map-img/icon90.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
    });
-var lot91Icon = L.Icon.extend({
+var lotAFPKIcon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-       iconUrl: require('./map-img/icon91.png'),
+       iconUrl: require('./map-img/iconAFPK.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
    });
 
-var lot92Icon = L.Icon.extend({
+var lot16Icon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-       iconUrl: require('./map-img/icon92.png'),
+       iconUrl: require('./map-img/icon16.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
@@ -75,6 +57,13 @@ export default function App() {
 
     return ( 
     <div>
+      <style>
+      {`
+        .widthAdjustment {
+          width: 210px;
+        }
+      `}
+      </style>
       <title>Parking Map | ParkSense</title>
       <MapContainer center={coordinates} zoom={12} style={{height: '850px'}}>
         <TileLayer
@@ -91,50 +80,38 @@ export default function App() {
         <Marker position={lot90} icon={new lot90Icon()}>
           <Popup>
               <span>
-                <h1>Rec Center</h1>
-                <h4>Lot 90</h4>
+                <h2 style={{margin: 0, marginBottom: '5px'}}>Rec Center</h2>
+                <h4 style={{margin: 0, marginBottom: '10px'}}>Lot 90</h4>
                 <Button label="Lot Information" onClick={()=>handlePopupClick("Rec Center (Lot 90)")}></Button>
               </span>
           </Popup>
         </Marker>
 
-        <Marker position={lot91} icon={new lot91Icon()}>
-          <Popup>
+        <Marker position={lotAFPK} icon={new lotAFPKIcon()}>
+          <Popup className="widthAdjustment">
               <span>
-                <h1>Rec Center</h1>
-                <h4>Lot 90</h4>
-                <Button label="Lot Information" onClick={()=>handlePopupClick("Rec Center (Lot 90)")}></Button>
+                <h2 style={{margin: 0, marginBottom: '5px'}}>Allen Fieldhouse Parking Garage</h2>
+                <h4 style={{margin: 0, marginBottom: '10px'}}>AFPK</h4>
+                <Button label="Lot Information" onClick={()=>handlePopupClick("Allen Fieldhouse Parking Garage (AFPK)")}></Button>
               </span>
           </Popup>
         </Marker>
 
-        <Marker position={lot92} icon={new lot92Icon()}>
+        <Marker position={lot16} icon={new lot16Icon()}>
           <Popup>
               <span>
-                A pretty CSS3 popup. <br/> Easily customizable.
+                <h2 style={{margin: 0, marginBottom: '5px'}}>East Kansas Union</h2>
+                <h4 style={{margin: 0, marginBottom: '10px'}}>Lot 16</h4>
+                <Button label="Lot Information" onClick={()=>handlePopupClick("E. Kansas Union (Lot 16)")}></Button>
               </span>
           </Popup>
         </Marker>
-
-
       </MapContainer>;
     </div>)
-
-  }
+}
 ReactDOM.render(
   <Router>
     <App/>
   </Router>,
     document.getElementById('root')
 );
-
-/*
-
-export default function ParkingMap(){
-  return(
-      <div>
-      <title>Parking Map | ParkSense</title>
-      <p>ParkingMap Component</p>
-      </div>
-  );
-}*/
