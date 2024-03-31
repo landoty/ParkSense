@@ -64,13 +64,14 @@ const SearchBar = ({onSearch}) => {
         <div ref={clickAwayState}>
             <style>
             {`
-                .outerStyling {
+                .positioning {
                     position: relative;
                 }
 
-                .innerStyling {
+                .suggestionStyling {
                     position: absolute;
                     width: 100%;
+                    z-index: 2147483647;
                 }
             `}
             </style>
@@ -84,8 +85,8 @@ const SearchBar = ({onSearch}) => {
                     onChange={(e) => {setSearchedLot(e.target.value)}}
                     onKeyDown={handleKeyPress}
                 />
-                <div className="outerStyling">
-                    <div className="innerStyling">
+                <div className="positioning">
+                    <div className="suggestionStyling">
                         <SearchSuggestions suggestions={searchSuggestions} onClickSuggestion={handleClickSuggestion}></SearchSuggestions>
                     </div>
                 </div>
