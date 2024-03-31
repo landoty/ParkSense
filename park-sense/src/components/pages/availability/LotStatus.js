@@ -49,20 +49,6 @@ export default function LotStatus(currentLotId){
                             <AvgBusyTimesChart avgBusyTimes={avgBusyTimes}></AvgBusyTimesChart>
                         </Fieldset>
                     </div>
-                    <div className='info3'>
-                        <Fieldset legend='Image on Map'>
-                            <p className='m-0'>
-                                Image of the parking lot on a map
-                            </p>
-                        </Fieldset>
-                    </div>
-                    <div className='info4'>
-                        <Fieldset legend='Actual Image of Lot'>
-                            <p className='m-0'>
-                                Image of the parking lot
-                            </p>
-                        </Fieldset>
-                    </div>
                 </div> 
                 // To get lot name: {currentLotId.currentLotId}
             ) : (
