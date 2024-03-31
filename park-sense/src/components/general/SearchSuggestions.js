@@ -10,19 +10,9 @@ import Suggestion from './Suggestion.js'
 const SearchSuggestions = ({suggestions, onClickSuggestion}) => {
     return (
         <div>
-            <style>
-            {`
-                .suggestionsStyling {
-                    background: white;
-                    border-radius: 5px;
-                }
-            `}
-            </style>
-            <div className="suggestionsStyling">
-                {suggestions.map((suggestion, key) => {
-                    return <Suggestion suggestion={suggestion} key={key} onClick={onClickSuggestion}></Suggestion>;
-                })}
-            </div>
+            {suggestions.map((suggestion, key) => {
+                return <Suggestion suggestion={suggestion} key={key} onClick={onClickSuggestion}></Suggestion>;
+            })}
         </div>
     )
 }
