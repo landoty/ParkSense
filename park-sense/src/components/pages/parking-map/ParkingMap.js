@@ -10,7 +10,7 @@ import PropTypes                         from 'prop-types';
 import React, { Component }              from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Map, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-//import lot90Icon from './../../../img/map-img/icon90.png';
+
 import L from "leaflet";
 
 
@@ -19,35 +19,25 @@ const lot90 = [38.952520, -95.250020];
 const lot91 = [38.960544, -95.244769];
 const lot92 = [38.962088, -95.244967];
 
-/*const lot90Icon = new L.Icon({
-    //img src={AboutImage}
-    iconURL: require("./../../../img/map-img/icon90.png"),
-    //iconURL: lot90Icon,
-    iconSize: [35,35],
-    //iconAnchor: [17,46],
-    //popupAnchor: [3,-46]
-});*/
-//var lot90Icon = L.icon({iconURL:'./../../../img/map-img/icon90.png'});
+
 var lot90Icon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+       
        iconUrl: require('./map-img/icon90.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
    });
 var lot91Icon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+       
        iconUrl: require('./map-img/icon91.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
@@ -55,12 +45,11 @@ var lot91Icon = L.Icon.extend({
 
 var lot92Icon = L.Icon.extend({
   options: {
-       //iconUrl: './../../../../img/map-img/icon90.png',
-       //iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+       
        iconUrl: require('./map-img/icon92.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
-       //shadowSize: new L.Point(68, 95),
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
@@ -115,13 +104,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-/*
 
-export default function ParkingMap(){
-  return(
-      <div>
-      <title>Parking Map | ParkSense</title>
-      <p>ParkingMap Component</p>
-      </div>
-  );
-}*/
