@@ -5,6 +5,7 @@ Authors: Troy D'Amico
 Date: 11/3/23
 */
 import { useEffect, useState } from "react";
+import { username, password } from "../authentication";
 
 export const useGetSingleLotData = (lotName) => {
     const [userData, setUserData] = useState({});
@@ -12,8 +13,15 @@ export const useGetSingleLotData = (lotName) => {
         const fetchData = async () => {
         try {
             if (lotName.currentLotId != null){
+                //Constructing authorization header
+                const auth = 'Basic ' + btoa(`${username}:${password}`);
                 const apiAddress = '/api/parking-lot/' + lotName.currentLotId;
-                const response = await fetch(apiAddress);
+                const response = await fetch(apiAddress, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: auth
+                    }
+                });
                 const data = await response.json();
                 setUserData(data);
             }
