@@ -8,7 +8,8 @@ Date: 10/03/23
 import ReactDOM from 'react-dom'
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+
 import L from "leaflet";
 import {BrowserRouter as Router, useNavigate} from 'react-router-dom';
 import { Button } from 'primereact/button';
@@ -18,20 +19,25 @@ const lot90 = [38.952520, -95.250020];
 const lotAFPK = [38.955233, -95.252906];
 const lot16 = [38.959042, -95.242745];
 
+
 var lot90Icon = L.Icon.extend({
   options: {
+       
        iconUrl: require('./map-img/icon90.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
    });
 var lotAFPKIcon = L.Icon.extend({
   options: {
-       iconUrl: require('./map-img/iconAFPK.png'),
+       
+       iconUrl: require('./map-img/icon91.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
@@ -39,9 +45,11 @@ var lotAFPKIcon = L.Icon.extend({
 
 var lot16Icon = L.Icon.extend({
   options: {
-       iconUrl: require('./map-img/icon16.png'),
+       
+       iconUrl: require('./map-img/icon92.png'),
        iconSize: new L.Point(32, 32),
        opacity: 0.5,
+       
        iconAnchor: new L.Point(16, 16),
        popupAnchor: new L.Point(0, -18)
      }
@@ -119,3 +127,5 @@ ReactDOM.render(
   </Router>,
     document.getElementById('root')
 );
+
+
