@@ -9,23 +9,26 @@
 //#include "custom_model.h"
 // #include "mobilenet_v2_int8.h"
 // #include "new_int8.h"
-#include "tflite_learn_14.h"
-#include "mobilenet_v2_int8.h"
-#include "ei_model.h"
-#include "mobilenetv2.h"
-#include "model.h"
+// #include "tflite_learn_14.h"
+// #include "mobilenet_v2_int8.h"
+// #include "ei_model.h"
+// #include "mobilenetv2.h"
+// #include "model.h"
+// #include "mobilenet_v2_0417.h"
+#include "mobilenet_v2_0421.h"
+
 
 #include <esp_attr.h>
 #include <Arduino.h>
 
-constexpr int kTensorArenaSize = 361216;
+constexpr int kTensorArenaSize = 625696;
 
 CNN::CNN() {
     sleep(1);
     Serial.println("Called constructor");
 
     // get model (.tflite) from flash
-    model = tflite::GetModel(mobilenetv2);
+    model = tflite::GetModel(mobilenet_v2_0421);
     if (model->version() != TFLITE_SCHEMA_VERSION)
     {
         error_reporter->Report(
