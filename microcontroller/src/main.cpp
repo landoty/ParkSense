@@ -21,8 +21,8 @@
 #include <EEPROM.h>            // read and write from flash memory
 #include "CNN.h"
 
-#define INPUT_W 96
-#define INPUT_H 96
+#define INPUT_W 120
+#define INPUT_H 120
 #define LED_BUILT_IN 21
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
@@ -46,9 +46,9 @@
 
 #define LED_GPIO_NUM      21
 
-#define SETUP_AP 0 // 1=AP, 0=STA
-const char* ssid = "wireless-ssid"; // change to wirless ssid
-const char* password = "wireless-password"; // change to wireless password
+#define SETUP_AP 1 // 1=AP, 0=STA
+const char* ssid = "custom_wifi"; // change to wirless ssid
+const char* password = "supersafepassword"; // change to wireless password
 
 const String api_ip = "192.168.1.2"; // change to API IP addr
 const String api_path = "/parking-lot/lot90"; // change to lot name
@@ -207,7 +207,7 @@ void loop() {
 
     if(prediction > 0.5) {
       Serial.println("Car");
-      post_api("1");
+      // post_api("1");
     }
     else{
       // Just for debugging, remove later
