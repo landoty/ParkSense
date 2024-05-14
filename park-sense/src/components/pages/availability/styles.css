@@ -1,0 +1,23 @@
+.header { grid-area: header; }
+.info1 { grid-area: info1; }
+.info2 { grid-area: info2; }
+.info3 { grid-area: info3; }
+.info4 { grid-area: info4; }
+
+.grid-container{
+    display: grid;
+    grid-template-areas:
+      'header header'
+      'info1 info2'
+      'info3 info4';
+    /* column-gap: 25%;
+    row-gap: 25%; */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.top-middle{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}

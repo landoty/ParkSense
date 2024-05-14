@@ -9,7 +9,7 @@ import HomeNavBar from './HomeNavBar.js'
 export default function Home(){
     return(
         <div>
-            <title>ParkSense</title>
+            <title>Home | ParkSense</title>
             <HomeNavBar></HomeNavBar>
         </div>
     );

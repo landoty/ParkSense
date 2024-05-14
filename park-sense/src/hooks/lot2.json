@@ -1,0 +1,11 @@
+
+{
+    "lot" : "Rec Center (Lot 90)",
+    "pass" :"Yellow",
+    "hours": "7:00 a.m. to 5:00 p.m.",
+    "amenities":[
+        "Rec Center",
+        "Capital Federal Hall",
+        "Watkins Health Center"
+    ]
+}

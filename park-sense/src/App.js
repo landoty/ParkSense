@@ -11,18 +11,21 @@ import Availability from './components/pages/availability/Availability.js';
 import ParkingMap from './components/pages/parking-map/ParkingMap.js';
 import NoPage from './components/pages/no-page/NoPage.js';
 import MainNavBar from './components/general/MainNavBar.js';
+import Footer from './components/general/Footer.js';
 
 function App() {
   return(
-      <Router>
-        <MainNavBar></MainNavBar>
-        <Routes>
-          <Route index element={<Home/>}/>
-          <Route path="/availability" element={<Availability/>}/>
-          <Route path="/parking-map" element={<ParkingMap/>}/>
-          <Route path="*" element={<NoPage/>}/>
-        </Routes>
-      </Router>);
+        <Router>
+          <MainNavBar></MainNavBar>
+          <Routes>
+            <Route index element={<Home/>}/>
+            <Route path="/availability" element={<Availability/>}/>
+            <Route path="/parking-map" element={<ParkingMap/>}/>
+            <Route path="*" element={<NoPage/>}/>
+          </Routes>
+          <Footer></Footer>
+        </Router>
+      );
 }
 
 export default App;
