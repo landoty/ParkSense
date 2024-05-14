@@ -11,6 +11,7 @@ We currently provide a web-based frontend, developed in [React](https://react.de
 # Team Members (by contribution)
 
 **Frontend**:
+
 - Sam Aldeguer
 - Troy D'Amico
 - Aaron Horton
@@ -25,7 +26,7 @@ We currently provide a web-based frontend, developed in [React](https://react.de
 
 ## Frontend Availability Page
 
-<video loop src="./docs/imgs/Frontend_Demo_Availability_Page.mp4"></video>
+[./docs/imgs/Frontend_Demo_Availability_Page.mp4](https://github.com/landoty/ParkSense/assets/64577529/cc7c4e7a-27b4-4ed5-aa57-9d9f8231c778)
 
 ## Microcontroller Custom Housing
 
